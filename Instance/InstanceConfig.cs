@@ -11,16 +11,16 @@ namespace StateFunding {
     }
 
     public Instance createInstance () {
-      RenderingManager.AddToPostDrawQueue(0, OnDraw);
+      RenderingManager.AddToPostDrawQueue (0, OnDraw);
       return new Instance ();
     }
 
     public void createInstanceWindow (int windowId) {
-      GUILayout.BeginHorizontal(GUILayout.Width(250f));
-      GUILayout.Label("This is a label");
-      GUILayout.EndHorizontal();
+      GUILayout.BeginHorizontal (GUILayout.Width (250f));
+      GUILayout.Label ("This is a label");
+      GUILayout.EndHorizontal ();
 
-      GUI.DragWindow();
+      GUI.DragWindow ();
     }
 
     public Instance loadInstance () {
@@ -35,10 +35,10 @@ namespace StateFunding {
       }
     }
 
-    void OnDraw() {
+    void OnDraw () {
       int horzMargin = 100;
       int vertMargin = 60;
-      Rect windowRect = new Rect (horzMargin, vertMargin, Screen.width - horzMargin*2, Screen.height - vertMargin*2);
+      Rect windowRect = new Rect (horzMargin, vertMargin, Screen.width - horzMargin * 2, Screen.height - vertMargin * 2);
       GUILayout.Window (0, windowRect, createInstanceWindow, "State Funding");
     }
 

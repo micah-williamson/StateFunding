@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace StateFunding
-{
-	public interface IInstance {}
+namespace StateFunding {
+  public interface IInstance {
+
+  }
 }
 

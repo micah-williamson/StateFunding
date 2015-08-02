@@ -1,10 +1,8 @@
 ﻿using System;
 
-namespace StateFunding
-{
-	public interface IGovernment
-	{
-		float getKSPBudget();
-	}
+namespace StateFunding {
+  public interface IGovernment {
+    float getKSPBudget ();
+  }
 }
 
