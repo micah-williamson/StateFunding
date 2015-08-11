@@ -3,14 +3,16 @@ using System.Collections;
 using UnityEngine;
 
 namespace StateFunding {
-  [KSPAddon (KSPAddon.Startup.MainMenu, true)]
+  [KSPAddon (KSPAddon.Startup.MainMenu, false)]
   public class OnMainMenu : MonoBehaviour {
     public void Awake () {
-      StateFundingGlobal.fetch = new StateFunding ();
+      if(StateFundingGlobal.fetch == null) {
+        StateFundingGlobal.fetch = new StateFunding ();
+      }
     }
 
     public void Start () {
-      
+      StateFundingGlobal.fetch.unload ();
     }
 
     public void Update () {

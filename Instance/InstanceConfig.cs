@@ -1,26 +1,21 @@
 ﻿using System;
 using UnityEngine;
+using System.Collections;
 
 namespace StateFunding {
-  public class InstanceConfig : MonoBehaviour, IInstanceConfig {
+  public class InstanceConfig : MonoBehaviour {
     private String saveName = "statefunding.conf";
     private String saveFilePath;
+    private NewInstanceConfigView NewView;
 
     public InstanceConfig () {
-      saveFilePath = HighLogic.fetch.GameSaveFolder + "/" + saveName;
+      saveFilePath = "saves/" + HighLogic.fetch.GameSaveFolder + "/" + saveName;
+
     }
 
-    public Instance createInstance () {
-      RenderingManager.AddToPostDrawQueue (0, OnDraw);
-      return new Instance ();
-    }
-
-    public void createInstanceWindow (int windowId) {
-      GUILayout.BeginHorizontal (GUILayout.Width (250f));
-      GUILayout.Label ("This is a label");
-      GUILayout.EndHorizontal ();
-
-      GUI.DragWindow ();
+    public void createInstance (Action <Instance>Callback) {
+      NewView = new NewInstanceConfigView ();
+      NewView.OnCreate (Callback);
     }
 
     public Instance loadInstance () {
@@ -31,15 +26,17 @@ namespace StateFunding {
         Instance Inst = new Instance ();
         ConfigNode.LoadObjectFromConfig (Inst, CnfNode);
 
-        return Inst;  
-      }
-    }
+        switch (Inst.govName) {
+          case "USK":
+            Inst.Gov = StateFundingGlobal.fetch.USK;
+            break;
+          case "USSK":
+            Inst.Gov = StateFundingGlobal.fetch.USSK;
+            break;
+        }
 
-    void OnDraw () {
-      int horzMargin = 100;
-      int vertMargin = 60;
-      Rect windowRect = new Rect (horzMargin, vertMargin, Screen.width - horzMargin * 2, Screen.height - vertMargin * 2);
-      GUILayout.Window (0, windowRect, createInstanceWindow, "State Funding");
+        return Inst;
+      }
     }
 
     public bool saveExists () {
@@ -48,8 +45,9 @@ namespace StateFunding {
 
     public void saveInstance (Instance Inst) {
       ConfigNode CnfNode = ConfigNode.CreateConfigFromObject (Inst);
-      CnfNode.Save ("test.statefunding.conf");
+      CnfNode.Save (saveFilePath);
     }
+
   }
 }
 

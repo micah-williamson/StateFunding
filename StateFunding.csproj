@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -32,15 +32,32 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="StateFunding.cs" />
-    <Compile Include="Government\IGovernment.cs" />
     <Compile Include="Government\Government.cs" />
-    <Compile Include="Instance\IInstance.cs" />
-    <Compile Include="Instance\Instance.cs" />
-    <Compile Include="Instance\IInstanceConfig.cs" />
-    <Compile Include="Instance\InstanceConfig.cs" />
     <Compile Include="Hooks\OnMainMenu.cs" />
     <Compile Include="Hooks\OnSpaceCentre.cs" />
+    <Compile Include="Instance\Instance.cs" />
+    <Compile Include="Instance\InstanceConfig.cs" />
     <Compile Include="StateFundingGlobal.cs" />
+    <Compile Include="View\View.cs" />
+    <Compile Include="View\ViewManager.cs" />
+    <Compile Include="ViewComponents\ViewComponent.cs" />
+    <Compile Include="ViewComponents\ViewWindow.cs" />
+    <Compile Include="ViewComponents\RelativeViewComponent.cs" />
+    <Compile Include="ViewComponents\ViewImage.cs" />
+    <Compile Include="ViewComponents\ViewLabel.cs" />
+    <Compile Include="ViewComponents\ViewButton.cs" />
+    <Compile Include="ViewComponents\ViewGovernmentButton.cs" />
+    <Compile Include="Instance\NewInstanceConfigView.cs" />
+    <Compile Include="Review\Review.cs" />
+    <Compile Include="Review\CoverageReport.cs" />
+    <Compile Include="Review\ReviewManager.cs" />
+    <Compile Include="Review\ReviewToastView.cs" />
+    <Compile Include="Review\ReviewView.cs" />
+    <Compile Include="ViewComponents\ViewTextArea.cs" />
+    <Compile Include="Hooks\OnEveryScene.cs" />
+    <Compile Include="Review\ReviewApplicationLauncher.cs" />
+    <Compile Include="Review\ReviewHubView.cs" />
+    <Compile Include="ViewComponents\ViewReviewButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
@@ -54,14 +71,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="assets\governmentguy.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Government\" />
-    <Folder Include="Instance\" />
-    <Folder Include="Hooks\" />
-    <Folder Include="assets\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -131,4 +140,35 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Government\" />
+    <Folder Include="Hooks\" />
+    <Folder Include="Instance\" />
+    <Folder Include="View\" />
+    <Folder Include="ViewComponents\" />
+    <Folder Include="assets\" />
+    <Folder Include="Review\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="assets\kerbalgovernment.pxm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\kerbalgovernment.jpg">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <DeployService-HasPathReferences>True</DeployService-HasPathReferences>
+      <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\kerbalterror.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\kerbalfunding.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\cashmoney.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

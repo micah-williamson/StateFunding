@@ -3,19 +3,20 @@ using System.Collections;
 using UnityEngine;
 
 namespace StateFunding {
-  [KSPAddon (KSPAddon.Startup.SpaceCentre, false)]
-  public class OnSpaceCentre : MonoBehaviour {
+  [KSPAddon (KSPAddon.Startup.EveryScene, false)]
+  public class OnEveryScene : MonoBehaviour {
     public void Awake () {
       
     }
 
     public void Start () {
-      ViewManager.removeAll ();
-      StateFundingGlobal.fetch.LoadIfNeeded ();
+      
     }
 
     public void Update () {
-      
+      if (StateFundingGlobal.fetch != null) {
+        StateFundingGlobal.fetch.tick ();
+      }
     }
 
     public void FixedUpdate () {
