@@ -139,19 +139,19 @@ namespace StateFunding {
     // Events
 
     public void OnCrewKilled(EventReport Evt) {
-      GameInstance.ActiveReview.kerbalDeaths++;
+      //GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrewLeftForDead(ProtoCrewMember Crew, int id) {
-      GameInstance.ActiveReview.kerbalDeaths++;
+      //GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrash(EventReport Evt) {
-      GameInstance.ActiveReview.vesselsDestroyed++;
+      //GameInstance.ActiveReview.vesselsDestroyed++;
     }
 
     public void OnCrashSplashdown(EventReport Evt) {
-      GameInstance.ActiveReview.vesselsDestroyed++;
+      //GameInstance.ActiveReview.vesselsDestroyed++;
     }
 
   }

@@ -14,19 +14,24 @@ namespace StateFunding {
 
     private void Init(Instance Inst) {
       CelestialBody[] Bodies = FlightGlobals.Bodies.ToArray ();
-      Coverages = new CoverageReport [Bodies.Length];
+      Coverages = new CoverageReport [Bodies.Length-1];
 
+      int k = 0;
       for (int i = 0; i < Bodies.Length; i++) {
         CelestialBody Body = Bodies [i];
 
-        CoverageReport Report = new CoverageReport ();
-        Report.entity = Body.GetName ();
+        // Don't need to survey the sun
+        if (Body.GetName () != "Sun") {
+          CoverageReport Report = new CoverageReport ();
+          Report.entity = Body.GetName ();
 
-        // Benchmark: Kerbin
-        // 10 sats till full coverage on Kerbin
-        Report.satCountForFullCoverage = (int)Math.Ceiling (Body.Radius / 60000);
+          // Benchmark: Kerbin
+          // 10 sats till full coverage on Kerbin
+          Report.satCountForFullCoverage = (int)Math.Ceiling (Body.Radius / 60000);
 
-        Coverages [i] = Report;
+          Coverages [k] = Report;
+          k++;
+        }
       }
     }
 
@@ -61,7 +66,7 @@ namespace StateFunding {
     public int miningRigs = 0;
 
     [Persistent]
-    public int satelliteCoverage = 0;
+    public float satelliteCoverage = 0;
 
     [Persistent]
     public int sc = 0;
@@ -104,24 +109,20 @@ namespace StateFunding {
     }
 
     private void UpdateCoverage() {
-      
-      Vessel[] Satellites = VesselHelper.GetVesselsWithModules(new string[] {
-        "ModuleDeployableSolarPanel",
-        "ModuleDataTransmitter",
-        "ModuleSAS"
-      });
+
+      for (int i = 0; i < Coverages.Length; i++) {
+        Coverages [i].satCount = 0;
+      }
+
+      Vessel[] Satellites = VesselHelper.GetSatellites ();
 
       for (int i = 0; i < Satellites.Length; i++) {
         Vessel Satellite = Satellites [i];
 
-        if (!Satellite.Landed) {
-          if (Satellite.GetOrbit() != null) {
-            CelestialBody Body = Satellite.GetOrbit ().referenceBody;
-            CoverageReport Report = GetReport (Body.GetName ());
-            Report.satCount++;
-            Report.update ();
-          }
-        }
+        CelestialBody Body = Satellite.GetOrbit ().referenceBody;
+        CoverageReport Report = GetReport (Body.GetName ());
+        Report.satCount++;
+        Report.Update ();
       }
 
       float totalCoverage = 0;
@@ -129,56 +130,21 @@ namespace StateFunding {
         totalCoverage += Coverages [i].coverage;
       }
 
-      satelliteCoverage = (int)totalCoverage / Coverages.Length;
+      satelliteCoverage = (float)totalCoverage/(float)Coverages.Length;
     }
 
     private void UpdateActiveKerbals() {
-      activeKerbals = KerbalHelper.getAssignedKerbalCount ();
-
+      activeKerbals = KerbalHelper.GetActiveKerbals ().Length;
+      strandedKerbals = KerbalHelper.GetStrandedKerbals ().Length;
     }
 
     private void UpdateMiningRigs() {
-      Vessel[] MiningRigs = VesselHelper.GetVesselsWithModules(new string[] {
-        "ModuleDeployableSolarPanel",
-        "ModuleDataTransmitter",
-        "ModuleResourceHarvester"
-      });
-
-      for (var i = 0; i < MiningRigs.Length; i++) {
-        Vessel MiningRig = MiningRigs [i];
-        Debug.LogWarning ("Found a science lab with crew");
-        // Planetary science station
-
-        if (MiningRig.Landed && MiningRig.landedAt != SpaceCenter.Instance.cb.GetName()) {
-          Debug.Log ("It's Landed");
-          orbitalScienceStations++;
-        }
-
-      }
+      miningRigs = VesselHelper.GetMiningRigs ().Length;
     }
 
     private void UpdateScienceStations() {
-      Vessel[] ScienceLabs = VesselHelper.GetVesselsWithModules(new string[] {
-        "ModuleDeployableSolarPanel",
-        "ModuleDataTransmitter",
-        "ModuleScienceLab"
-      });
-
-      for (var i = 0; i < ScienceLabs.Length; i++) {
-        Vessel ScienceLab = ScienceLabs [i];
-
-        if (ScienceLab.GetCrewCount () > 0) {
-          Debug.LogWarning ("Found a science lab with crew");
-
-          if (ScienceLab.Landed && ScienceLab.landedAt != SpaceCenter.Instance.cb.GetName()) {
-            Debug.Log ("It's Landed");
-            orbitalScienceStations++;
-          } else if (!ScienceLab.Landed) {
-            Debug.Log ("It's Orbital");
-            planetaryScienceStations++;
-          }
-        }
-      }
+      orbitalScienceStations = VesselHelper.GetOrbitingScienceStations ().Length;
+      planetaryScienceStations = VesselHelper.GetLandedScienceStations ().Length;
     }
 
     public void touch() {
@@ -210,62 +176,7 @@ namespace StateFunding {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
       Government Gov = Inst.Gov;
 
-      Vessel[] Vessels = (Vessel[])FlightGlobals.Vessels.ToArray();
-      for (var i = 0; i < Vessels.Length; i++) {
-        Vessel Vsl = Vessels [i];
-
-        // Check for parts
-        bool hasAntenna = false;
-        bool hasDrill = false;
-        bool hasSolar = false;
-        ProtoPartSnapshot[] Parts = (ProtoPartSnapshot[])Vsl.protoVessel.protoPartSnapshots.ToArray();
-        for (int k = 0; k < Parts.Length; k++) {
-          ProtoPartSnapshot Prt = Parts [k];
-          ProtoPartModuleSnapshot[] Modules = Prt.modules.ToArray ();
-          for (int j = 0; j < Modules.Length; j++) {
-            ProtoPartModuleSnapshot Module = Modules [j];
-
-            if (Module.moduleValues.GetValue ("name") == "ModuleDeployableSolarPanel") {
-              hasSolar = true;
-            }
-
-            if(Module.moduleValues.GetValue("name") == "ModuleDataTransmitter") {
-              hasAntenna = true;
-            }
-
-            if (Module.moduleValues.GetValue ("name") == "ModuleResourceHarvester") {
-              hasDrill = true;
-            }
-          }
-        }
-
-        if (hasSolar) {
-          Debug.LogWarning ("Found vessel with power");
-        }
-
-        if (hasAntenna) {
-          Debug.LogWarning ("Found vessel with an antenna");
-        }
-
-        if (hasDrill) {
-          Debug.LogWarning ("Found a vessel with a drill");
-        }
-
-        // If it can generate power and communicate continue
-        if (hasSolar && hasAntenna) {
-          Debug.Log ("Found vessel with power and an antenna");
-
-          // If it has a drill and is landed somewhere else, have some points
-          // TODO: Remove after testing
-          if (Vsl.Landed && hasDrill/* && Vsl.landedAt != FlightGlobals.GetHomeBodyName*/) {
-            Debug.Log ("Found a vessel with a drill");
-            tmpSc += (int)(20 * Gov.scModifier);
-          }
-
-          tmpSc += (int)(3 * Gov.scModifier);
-        }
-
-      }
+      touch ();
 
       tmpSc -= (int)(3 * (vesselsDestroyed / 3) * Gov.scPenaltyModifier);
       tmpSc -= (int)(5 * contractsFailed * Gov.scPenaltyModifier);

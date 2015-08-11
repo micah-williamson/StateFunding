@@ -10,7 +10,6 @@ namespace StateFunding {
 
       Review Rev = Inst.ActiveReview;
       Rev.year = (int)(Planetarium.GetUniversalTime()/60/60/6/426);
-      Debug.Log ("ASDF");
       Rev.touch ();
 
       ReviewToastView Toast = new ReviewToastView (Rev);

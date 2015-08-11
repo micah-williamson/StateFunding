@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace StateFunding {
   public class CoverageReport {
@@ -16,11 +17,11 @@ namespace StateFunding {
     [Persistent]
     public float coverage = 0;
 
-    public void update() {
+    public void Update() {
       if (satCount == 0) {
         coverage = 0;
       } else {
-        coverage = satCountForFullCoverage / Math.Min (satCount, satCountForFullCoverage);
+        coverage = (float)Math.Min (satCount, satCountForFullCoverage) / (float)satCountForFullCoverage;
       }
     }
   }
