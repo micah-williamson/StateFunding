@@ -5,9 +5,7 @@ using System.Collections;
 namespace StateFunding {
   public class StateFundingHubView: View {
     private ViewWindow Window;
-    private ViewButton PastReviews;
-    private ViewButton SFGuide;
-    private ViewLabel CurrentView;
+    private ArrayList SideMenu;
 
     public StateFundingHubView () {
       createWindow ();
@@ -20,40 +18,31 @@ namespace StateFunding {
     private void reloadBase() {
       this.removeAll ();
 
+      SideMenu = new ArrayList ();
+
       Window = new ViewWindow ("");
       Window.setMargins (300, 100);
 
-      PastReviews = new ViewButton ("Past Reviews", LoadPastReviews);
-      PastReviews.setRelativeTo (Window);
-      PastReviews.setLeft (10);
-      PastReviews.setTop (10);
-      PastReviews.setWidth (120);
-      PastReviews.setHeight (35);
-
-      SFGuide = new ViewButton ("SF Guide", LoadGuide);
-      SFGuide.setRelativeTo (Window);
-      SFGuide.setLeft (10);
-      SFGuide.setTop (55);
-      SFGuide.setWidth (120);
-      SFGuide.setHeight (35);
-
-      CurrentView = new ViewLabel ("");
-      CurrentView.setRelativeTo (Window);
-      CurrentView.setLeft (140);
-      CurrentView.setWidth (Window.getWidth () - 140);
-      CurrentView.setHeight (30);
-      CurrentView.setColor (Color.white);
-
       this.addComponent (Window);
-      this.addComponent (PastReviews);
-      this.addComponent (SFGuide);
-      this.addComponent (CurrentView);
+
+      SideMenu.Add(new ViewButton("PastReviews", LoadPastReviews));
+      SideMenu.Add(new ViewButton ("SF Guide", LoadGuide));
+
+      for (var i = 0; i < SideMenu.ToArray ().Length; i++) {
+        ViewButton Btn = (ViewButton)SideMenu.ToArray () [i];
+        Btn.setRelativeTo (Window);
+        Btn.setLeft (10);
+        Btn.setTop (10 + i * 45);
+        Btn.setWidth (120);
+        Btn.setHeight (35);
+        this.addComponent (Btn);
+      }
     }
 
     private void LoadPastReviews() {
       reloadBase ();
 
-      CurrentView.label = "Past Reviews";
+      Window.title = "Past Reviews";
       Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
 
       int buttonWidth = 60;
@@ -62,7 +51,15 @@ namespace StateFunding {
       int xOffset = 0;
       int yOffset = 0;
 
+      Debug.Log ("X");
+
+      Debug.Log (GameInstance);
+      Debug.Log(GameInstance.getReviews ());
+
+      Debug.Log ("Y");
+
       for (int i = GameInstance.getReviews ().Length - 1; i >= 0; i--) {
+        Debug.Log ("V");
         Review Rev = GameInstance.getReviews () [i];
 
         ViewReviewButton Btn = new ViewReviewButton (Rev, OnReviewClick);
@@ -78,6 +75,7 @@ namespace StateFunding {
 
           left = 140 + xOffset * buttonMargin + xOffset * buttonWidth;
           top = 40 + yOffset * buttonMargin + yOffset * buttonHeight;
+          Debug.Log ("V1");
         }
 
 
@@ -88,6 +86,8 @@ namespace StateFunding {
 
         xOffset++;
 
+        Debug.Log ("Y");
+
         this.addComponent (Btn);
       }
     }
@@ -95,7 +95,7 @@ namespace StateFunding {
     private void LoadGuide() {
       reloadBase ();
 
-      CurrentView.label = "StateFunding Guide";
+      Window.title = "StateFunding Guide";
 
       string guideLabel = "StateFunding Version 0.1.0\n" +
                           "--------------------------\n\n" +

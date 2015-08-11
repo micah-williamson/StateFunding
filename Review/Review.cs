@@ -5,8 +5,16 @@ using System.Collections;
 namespace StateFunding {
   public class Review {
     public Review () {
-      po = StateFundingGlobal.fetch.GameInstance.po;
-      sc = StateFundingGlobal.fetch.GameInstance.sc;
+      Init (StateFundingGlobal.fetch.GameInstance);
+    }
+
+    public Review (Instance Inst) {
+      Init (Inst);
+    }
+
+    private void Init(Instance Inst) {
+      po = Inst.po;
+      sc = Inst.sc;
 
       CelestialBody[] Bodies = FlightGlobals.Bodies.ToArray ();
       Coverages = new CoverageReport [Bodies.Length];
@@ -168,10 +176,15 @@ namespace StateFunding {
     }
 
     public void touch() {
+      Debug.Log ("XXX");
       updateCoverage ();
+      Debug.Log ("XXX");
       updateActiveKerbals ();
+      Debug.Log ("XXX");
       updateMiningRigs ();
+      Debug.Log ("XXX");
       updateScienceStations ();
+      Debug.Log ("XXX");
     }
 
     public int calcPO() {

@@ -20,7 +20,7 @@ namespace StateFunding {
     Review[] Reviews = new Review[0];
 
     public Instance () {
-      ActiveReview = new Review ();
+      ActiveReview = new Review (this);
     }
 
     public void addReview (Review R) {

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace StateFunding {
   public class ViewWindow: ViewComponent {
 
-    protected string title;
+    public string title;
     
     public ViewWindow (string title) {
       this.title = title;

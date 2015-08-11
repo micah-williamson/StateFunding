@@ -1,12 +1,13 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace StateFunding {
   public static class VesselHelper {
 
     public static Vessel[] GetVesselsWithModules(string[] modules) {
-      ArrayList ReturnVessels = new ArrayList();
+      List<Vessel> ReturnVessels = new List<Vessel>();
 
       Vessel[] Vessels = (Vessel[])FlightGlobals.Vessels.ToArray();
       for (var i = 0; i < Vessels.Length; i++) {
@@ -23,13 +24,12 @@ namespace StateFunding {
           ReturnVessels.Add (Vsl);
         }
       }
-
-      return (Vessel[])ReturnVessels.ToArray ();
+        
+      return ReturnVessels.ToArray();
     }
 
     public static bool VesselHasModule(Vessel Vsl, string module) {
       ProtoPartSnapshot[] Parts = (ProtoPartSnapshot[])Vsl.protoVessel.protoPartSnapshots.ToArray();
-
       for (int k = 0; k < Parts.Length; k++) {
         ProtoPartSnapshot Prt = Parts [k];
         ProtoPartModuleSnapshot[] Modules = Prt.modules.ToArray ();

@@ -15,7 +15,6 @@ namespace StateFunding {
 
     public StateFunding () {
       AppLauncher = new StateFundingApplicationLauncher ();
-
       InitGovernments ();
       InitEvents ();
     }
