@@ -17,8 +17,10 @@ namespace StateFunding {
       ViewManager.Views.Add (V);
     }
 
+    // TODO: Fix this. It sucks
     public static void removeView(View V) {
-      ViewManager.Views.Remove (V);
+      //ViewManager.Views.Remove (V);
+      ViewManager.removeAll();
     }
 
     public static void removeAll() {

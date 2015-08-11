@@ -23,7 +23,7 @@ namespace StateFunding {
     public void ApplyFunding(Review Rev) {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      Funding.Instance.AddFunds (Rev.calcFunds (), TransactionReasons.None);
+      Funding.Instance.AddFunds (Rev.CalcFunds (), TransactionReasons.None);
 
       Inst.addReview (Inst.ActiveReview);
       Inst.ActiveReview = new Review ();

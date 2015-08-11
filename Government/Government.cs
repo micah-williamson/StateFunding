@@ -8,15 +8,13 @@ namespace StateFunding {
     public float gdp;
     public string gameplayDescription;
     public string longName;
-    public float maxPO = 1000;
-    public float maxSC = 1000;
     public String name;
     public float poModifier;
     public float poPenaltyModifier;
     public float scModifier;
     public float scPenaltyModifier;
-    public float startingPO;
-    public float startingSC;
+    public int startingPO;
+    public int startingSC;
 
     public Government () {}
   }

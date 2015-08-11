@@ -13,9 +13,6 @@ namespace StateFunding {
     }
 
     private void Init(Instance Inst) {
-      po = Inst.po;
-      sc = Inst.sc;
-
       CelestialBody[] Bodies = FlightGlobals.Bodies.ToArray ();
       Coverages = new CoverageReport [Bodies.Length];
 
@@ -24,9 +21,12 @@ namespace StateFunding {
 
         CoverageReport Report = new CoverageReport ();
         Report.entity = Body.GetName ();
+
         // Benchmark: Kerbin
         // 10 sats till full coverage on Kerbin
         Report.satCountForFullCoverage = (int)Math.Ceiling (Body.Radius / 60000);
+
+        Coverages [i] = Report;
       }
     }
 
@@ -97,7 +97,13 @@ namespace StateFunding {
       return CReport;
     }
 
-    private void updateCoverage() {
+    private void UpdatePOSC() {
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      po = GameInstance.Gov.startingPO;
+      sc = GameInstance.Gov.startingSC;
+    }
+
+    private void UpdateCoverage() {
       
       Vessel[] Satellites = VesselHelper.GetVesselsWithModules(new string[] {
         "ModuleDeployableSolarPanel",
@@ -126,12 +132,12 @@ namespace StateFunding {
       satelliteCoverage = (int)totalCoverage / Coverages.Length;
     }
 
-    private void updateActiveKerbals() {
+    private void UpdateActiveKerbals() {
       activeKerbals = KerbalHelper.getAssignedKerbalCount ();
 
     }
 
-    private void updateMiningRigs() {
+    private void UpdateMiningRigs() {
       Vessel[] MiningRigs = VesselHelper.GetVesselsWithModules(new string[] {
         "ModuleDeployableSolarPanel",
         "ModuleDataTransmitter",
@@ -151,7 +157,7 @@ namespace StateFunding {
       }
     }
 
-    private void updateScienceStations() {
+    private void UpdateScienceStations() {
       Vessel[] ScienceLabs = VesselHelper.GetVesselsWithModules(new string[] {
         "ModuleDeployableSolarPanel",
         "ModuleDataTransmitter",
@@ -176,18 +182,14 @@ namespace StateFunding {
     }
 
     public void touch() {
-      Debug.Log ("XXX");
-      updateCoverage ();
-      Debug.Log ("XXX");
-      updateActiveKerbals ();
-      Debug.Log ("XXX");
-      updateMiningRigs ();
-      Debug.Log ("XXX");
-      updateScienceStations ();
-      Debug.Log ("XXX");
+      UpdatePOSC ();
+      UpdateCoverage ();
+      UpdateActiveKerbals ();
+      UpdateMiningRigs ();
+      UpdateScienceStations ();
     }
 
-    public int calcPO() {
+    public int CalcPO() {
       int tmpPo = po;
 
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
@@ -202,7 +204,7 @@ namespace StateFunding {
       return tmpPo;
     }
 
-    public int calcSC() {
+    public int CalcSC() {
       int tmpSc = sc;
 
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
@@ -272,18 +274,18 @@ namespace StateFunding {
       return tmpSc;
     }
 
-    public float calcFunds() {
+    public float CalcFunds() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      return (float)((float)(calcPO() + calcSC()) / 10000)*(float)Inst.Gov.gdp*(float)Inst.Gov.budget;
+      return (float)((float)(CalcPO() + CalcSC()) / 10000)*(float)Inst.Gov.gdp*(float)Inst.Gov.budget;
     }
 
-    public string getText() {
+    public string GetText() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      float funds = calcFunds ();
-      po = calcPO ();
-      sc = calcSC ();
+      float funds = CalcFunds ();
+      po = CalcPO ();
+      sc = CalcSC ();
 
       return "Yearly Review:\n" +
              "--------------\n\n" +
