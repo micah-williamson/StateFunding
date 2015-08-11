@@ -41,7 +41,7 @@ namespace StateFunding {
       Confirm.setRight (5);
       Confirm.setBottom (5);
 
-      if (Rev.pastReview) {
+      if (!Rev.pastReview) {
         Rev.touch ();
       }
 

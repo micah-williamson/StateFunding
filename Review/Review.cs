@@ -44,6 +44,12 @@ namespace StateFunding {
     public CoverageReport[] Coverages;
 
     [Persistent]
+    public int finalPO = 0;
+
+    [Persistent]
+    public int finalSC = 0;
+
+    [Persistent]
     public int funds = 0;
 
     [Persistent]
@@ -145,57 +151,71 @@ namespace StateFunding {
         UpdateActiveKerbals ();
         UpdateMiningRigs ();
         UpdateScienceStations ();
+        UpdateFinalPO ();
+        UpdateFinalSC ();
         UpdateFunds ();
+        UpdateYear ();
       } else {
         Debug.LogError ("Cannot touch a past review. It's properties are already set");
       }
     }
 
-    public int FinalPO() {
-      int tmpPo = po;
-
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
-      Government Gov = Inst.Gov;
-
-      tmpPo -= (int)(5 * kerbalDeaths * Gov.poPenaltyModifier);
-      tmpPo += (int)(3 * activeKerbals * Gov.poModifier);
-      tmpPo += (int)(3 * activeKerbals * Gov.poModifier);
-
-      return tmpPo;
+    public void UpdateYear() {
+      year = (int)(Planetarium.GetUniversalTime()/60/60/6/426);
     }
 
-    public int FinalSC() {
-      int tmpSc = sc;
+    public void UpdateFinalPO() {
+      int tmpPO = po;
 
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
       Government Gov = Inst.Gov;
 
-      tmpSc -= (int)(3 * (vesselsDestroyed / 3) * Gov.scPenaltyModifier);
-      tmpSc -= (int)(5 * contractsFailed * Gov.scPenaltyModifier);
-      tmpSc += (int)(5 * contractsCompleted * Gov.scModifier);
+      // Negatives
+      tmpPO -= (int)(5 * kerbalDeaths * Gov.poPenaltyModifier);
+      tmpPO -= (int)(5 * strandedKerbals * Gov.poPenaltyModifier);
 
-      return tmpSc;
+      // Positives
+      tmpPO += (int)(5 * activeKerbals * Gov.poModifier);
+
+      finalPO = tmpPO;
+    }
+
+    public void UpdateFinalSC() {
+      int tmpSC = sc;
+
+      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      Government Gov = Inst.Gov;
+
+      // Negatives
+      tmpSC -= (int)(3 * (vesselsDestroyed / 3) * Gov.scPenaltyModifier);
+      tmpSC -= (int)(5 * contractsFailed * Gov.scPenaltyModifier);
+
+      // Positives
+      tmpSC += (int)(5 * contractsCompleted * Gov.scModifier);
+      tmpSC += (int)(2 * satelliteCoverage * Gov.scModifier);
+      tmpSC += (int)(2 * orbitalScienceStations * Gov.scModifier);
+      tmpSC += (int)(5 * planetaryScienceStations * Gov.scModifier);
+      tmpSC += (int)(5 * miningRigs * Gov.scModifier);
+
+      finalSC = tmpSC;
     }
 
     private void UpdateFunds() {
-      if (!pastReview) {
-        Instance Inst = StateFundingGlobal.fetch.GameInstance;
-        funds = (int)(((float)(FinalPO () + FinalSC ()) / 10000) * (float)Inst.Gov.gdp * (float)Inst.Gov.budget);
-      } else {
-        Debug.LogError ("Cannot calculate funds on a past review. The funds are already calculated.");
-      }
+      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      funds = (int)(((float)(finalPO + finalSC) / 10000) * (float)Inst.Gov.gdp * (float)Inst.Gov.budget);
     }
 
     public string GetText() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      return "Yearly Review:\n" +
-             "--------------\n\n" +
+      return "# Review for Year:" + year + "\n\n" +
              "Funding: " + funds + "\n\n" +
              "Public Opinion: " + po + "\n" +
-             "State Confidence: " + sc + "\n\n" +
+             "State Confidence: " + sc + "\n" +
+             "Public Opinion After Modifiers & Decay: " + finalPO + "\n" +
+             "State Confidence After Modifiers & Decay: " + finalSC + "\n\n" +
              "Active Kerbals: " + activeKerbals + "\n" +
-             "Satellite Coverage: " + satelliteCoverage + "\n" +
+             "Satellite Coverage: " + Math.Round(satelliteCoverage*100) + "%\n" +
              "Active Mining Rigs: " + miningRigs + "\n" +
              "Obital Science Stations: " + orbitalScienceStations + "\n" +
              "Planetary Science Stations: " + planetaryScienceStations + "\n" +

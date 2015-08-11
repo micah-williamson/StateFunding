@@ -5,34 +5,40 @@ using System.Collections;
 namespace StateFunding {
   public class ReviewManager: MonoBehaviour {
 
-    public void GenerateReview () {
+    public void CompleteReview () {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
       Review Rev = Inst.ActiveReview;
-      Rev.year = (int)(Planetarium.GetUniversalTime()/60/60/6/426);
       Rev.touch ();
 
+      // Closed for business
+      Rev.pastReview = true;
+
+      // Move review to past review
+      Inst.addReview (Rev);
+
+      // Start a new review
+      Inst.ActiveReview = new Review ();
+
+      // Apply PO/SC decay on instance
+      ApplyDecay ();
+
+      // Apply funds from Review
+      Debug.Log("Adding Funds: " + Rev.funds);
+      Funding.Instance.AddFunds (Rev.funds, TransactionReasons.None);
+
+      // Notify player that a review is available
       ReviewToastView Toast = new ReviewToastView (Rev);
 
-      ApplyFunding (Rev);
+      // Save the instance and game
+      StateFundingGlobal.fetch.InstanceConf.saveInstance (Inst);
+      GamePersistence.SaveGame ("persistent", HighLogic.SaveFolder, SaveMode.OVERWRITE);
 
       Debug.Log ("Generated Review");
     }
 
-    public void ApplyFunding(Review Rev) {
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
-
-      Funding.Instance.AddFunds (Rev.funds, TransactionReasons.None);
-
-      Inst.addReview (Inst.ActiveReview);
-      Inst.ActiveReview = new Review ();
-      ApplyDecay ();
-
-      StateFundingGlobal.fetch.InstanceConf.saveInstance (Inst);
-      GamePersistence.SaveGame ("persistent", HighLogic.SaveFolder, SaveMode.OVERWRITE);
-    }
-
     public void ApplyDecay() {
+      Debug.Log ("Applying Decay");
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
       if (Inst.po > 0) {
         int newPO = Inst.po - (int)Math.Ceiling (Inst.po * 0.2);

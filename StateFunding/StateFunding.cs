@@ -113,7 +113,7 @@ namespace StateFunding {
         if ((GameInstance = InstanceConf.loadInstance ()) == null) {
           InstanceConf.createInstance ((Instance Inst) => {
             GameInstance = Inst;
-            ReviewMgr.GenerateReview ();
+            ReviewMgr.CompleteReview ();
             InstanceConf.saveInstance (Inst);
           });
         }
@@ -129,7 +129,7 @@ namespace StateFunding {
           int year = (int)(Planetarium.GetUniversalTime () / 60 / 60 / 6 / 426);
           if (year > ReviewMgr.LastReview ().year) {
             Debug.Log ("Happy New Year!");
-            ReviewMgr.GenerateReview ();
+            ReviewMgr.CompleteReview ();
           }
         }
       }
@@ -139,18 +139,22 @@ namespace StateFunding {
     // Events
 
     public void OnCrewKilled(EventReport Evt) {
+      Debug.LogError ("CREW KILLED?");
       //GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrewLeftForDead(ProtoCrewMember Crew, int id) {
+      Debug.LogError ("CREW LEFT FOR DEAD?");
       //GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrash(EventReport Evt) {
+      Debug.LogError ("VESSEL CRASHED?");
       //GameInstance.ActiveReview.vesselsDestroyed++;
     }
 
     public void OnCrashSplashdown(EventReport Evt) {
+      Debug.LogError ("VESSEL SPLASHED DOWN?");
       //GameInstance.ActiveReview.vesselsDestroyed++;
     }
 

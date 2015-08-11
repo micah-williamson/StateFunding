@@ -64,12 +64,15 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\packages\KSP_Libs.1.0.4\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\packages\KSP_Libs.1.0.4\lib\net35\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\packages\KSP_Libs.1.0.4\lib\net35\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
