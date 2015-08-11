@@ -31,13 +31,11 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="StateFunding.cs" />
     <Compile Include="Government\Government.cs" />
     <Compile Include="Hooks\OnMainMenu.cs" />
     <Compile Include="Hooks\OnSpaceCentre.cs" />
     <Compile Include="Instance\Instance.cs" />
     <Compile Include="Instance\InstanceConfig.cs" />
-    <Compile Include="StateFundingGlobal.cs" />
     <Compile Include="View\View.cs" />
     <Compile Include="View\ViewManager.cs" />
     <Compile Include="ViewComponents\ViewComponent.cs" />
@@ -47,19 +45,21 @@
     <Compile Include="ViewComponents\ViewLabel.cs" />
     <Compile Include="ViewComponents\ViewButton.cs" />
     <Compile Include="ViewComponents\ViewGovernmentButton.cs" />
-    <Compile Include="Instance\NewInstanceConfigView.cs" />
     <Compile Include="Review\Review.cs" />
     <Compile Include="Review\CoverageReport.cs" />
     <Compile Include="Review\ReviewManager.cs" />
-    <Compile Include="Review\ReviewToastView.cs" />
-    <Compile Include="Review\ReviewView.cs" />
     <Compile Include="ViewComponents\ViewTextArea.cs" />
     <Compile Include="Hooks\OnEveryScene.cs" />
-    <Compile Include="Review\ReviewApplicationLauncher.cs" />
-    <Compile Include="Review\ReviewHubView.cs" />
     <Compile Include="ViewComponents\ViewReviewButton.cs" />
     <Compile Include="Helpers\VesselHelper.cs" />
     <Compile Include="Helpers\KerbalHelper.cs" />
+    <Compile Include="Review\Views\ReviewToastView.cs" />
+    <Compile Include="Review\Views\ReviewView.cs" />
+    <Compile Include="Instance\Views\NewInstanceConfigView.cs" />
+    <Compile Include="StateFunding\StateFunding.cs" />
+    <Compile Include="StateFunding\StateFundingGlobal.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingApplicationLauncher.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
@@ -151,6 +151,10 @@
     <Folder Include="assets\" />
     <Folder Include="Review\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Review\Views\" />
+    <Folder Include="Instance\Views\" />
+    <Folder Include="StateFunding\" />
+    <Folder Include="StateFunding\Views\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

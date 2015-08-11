@@ -3,13 +3,13 @@ using UnityEngine;
 using System.Collections;
 
 namespace StateFunding {
-  public class ReviewHubView: View {
+  public class StateFundingHubView: View {
     private ViewWindow Window;
     private ViewButton PastReviews;
     private ViewButton SFGuide;
     private ViewLabel CurrentView;
 
-    public ReviewHubView () {
+    public StateFundingHubView () {
       createWindow ();
     }
 

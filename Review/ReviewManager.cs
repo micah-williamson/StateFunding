@@ -5,12 +5,6 @@ using System.Collections;
 namespace StateFunding {
   public class ReviewManager: MonoBehaviour {
 
-    private ReviewApplicationLauncher AppLauncher;
-
-    public ReviewManager () {
-      AppLauncher = new ReviewApplicationLauncher ();
-    }
-
     public void GenerateReview () {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 

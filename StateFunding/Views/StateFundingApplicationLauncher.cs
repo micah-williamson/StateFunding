@@ -4,11 +4,11 @@ using System.Collections;
 using System.IO;
 
 namespace StateFunding {
-  public class ReviewApplicationLauncher: MonoBehaviour {
-    private ReviewHubView View;
+  public class StateFundingApplicationLauncher: MonoBehaviour {
+    private StateFundingHubView View;
 
-    public ReviewApplicationLauncher () {
-      View = new ReviewHubView ();
+    public StateFundingApplicationLauncher () {
+      View = new StateFundingHubView ();
       Texture2D Image = new Texture2D (2, 2);
       Image.LoadImage (File.ReadAllBytes ("GameData/StateFunding/assets/cashmoney.png"));
       ApplicationLauncherButton Button = ApplicationLauncher.Instance.AddModApplication (onTrue, onFalse, onHover, onHoverOut, onEnable, onDisable, ApplicationLauncher.AppScenes.SPACECENTER, Image);

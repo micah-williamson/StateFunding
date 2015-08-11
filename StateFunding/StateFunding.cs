@@ -11,7 +11,11 @@ namespace StateFunding {
     public ReviewManager ReviewMgr;
     public Instance GameInstance;
 
+    private StateFundingApplicationLauncher AppLauncher;
+
     public StateFunding () {
+      AppLauncher = new StateFundingApplicationLauncher ();
+
       InitGovernments ();
       InitEvents ();
     }
