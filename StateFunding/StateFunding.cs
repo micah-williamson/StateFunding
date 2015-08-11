@@ -139,23 +139,23 @@ namespace StateFunding {
     // Events
 
     public void OnCrewKilled(EventReport Evt) {
-      Debug.LogError ("CREW KILLED?");
-      //GameInstance.ActiveReview.kerbalDeaths++;
+      Debug.LogWarning ("CREW KILLED");
+      GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrewLeftForDead(ProtoCrewMember Crew, int id) {
-      Debug.LogError ("CREW LEFT FOR DEAD?");
-      //GameInstance.ActiveReview.kerbalDeaths++;
+      Debug.LogWarning ("CREW KILLED");
+      GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrash(EventReport Evt) {
-      Debug.LogError ("VESSEL CRASHED?");
-      //GameInstance.ActiveReview.vesselsDestroyed++;
+      Debug.LogWarning ("VESSEL DESTROYED");
+      GameInstance.ActiveReview.vesselsDestroyed++;
     }
 
     public void OnCrashSplashdown(EventReport Evt) {
-      Debug.LogError ("VESSEL SPLASHED DOWN?");
-      //GameInstance.ActiveReview.vesselsDestroyed++;
+      Debug.LogWarning ("VESSEL DESTROYED");
+      GameInstance.ActiveReview.vesselsDestroyed++;
     }
 
   }

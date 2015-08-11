@@ -187,7 +187,8 @@ namespace StateFunding {
       Government Gov = Inst.Gov;
 
       // Negatives
-      tmpSC -= (int)(3 * (vesselsDestroyed / 3) * Gov.scPenaltyModifier);
+      // TODO: Is there a way to only detect the main vessel?
+      tmpSC -= (int)(2 * (vesselsDestroyed / 10) * Gov.scPenaltyModifier);
       tmpSC -= (int)(5 * contractsFailed * Gov.scPenaltyModifier);
 
       // Positives
