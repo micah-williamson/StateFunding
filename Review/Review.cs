@@ -277,7 +277,7 @@ namespace StateFunding {
              "Funding: " + funds + "\n\n" +
              "Public Opinion: " + po + " (" + poChange + " Change)\n" +
              "State Confidence: " + sc + " (" + scChange + " Change)\n\n" +
-             "Active Kerbals: " + activeKerbals + " (" + activeKerbalsChange + " Change)\n" +
+             "Active Kerbals: " + activeKerbals + "\n" +
              "Satellite Coverage: " + satelliteCoverage + "\n" +
              "Active Mining Rigs: " + miningRigs + "\n" +
              "Obital Science Stations: " + orbitalScienceStations + "\n" +
