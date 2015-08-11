@@ -41,7 +41,11 @@ namespace StateFunding {
       Confirm.setRight (5);
       Confirm.setBottom (5);
 
-      ReviewText = new ViewTextArea (Rev.getText());
+      if (!Rev.pastReview) {
+        Rev.touch ();
+      }
+
+      ReviewText = new ViewTextArea (Rev.GetText());
       ReviewText.setRelativeTo (Image);
       ReviewText.setPercentWidth (100);
       ReviewText.setTop (Image.getHeight() + 10);

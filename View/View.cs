@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace StateFunding {
   public class View: MonoBehaviour {
 
     private bool painting = true;
-    private ViewComponent[] components = new ViewComponent[0];
+    private List<ViewComponent> Components = new List<ViewComponent>();
     
-    public View () {
-      
-    }
+    public View () {}
 
     public void addComponent(ViewComponent C) {
       if (C is RelativeViewComponent) {
@@ -19,17 +18,11 @@ namespace StateFunding {
         }
       }
 
-      ViewComponent[] newComponents = new ViewComponent[components.Length+1];
-      for(int i = 0; i < components.Length; i++) {
-        newComponents[i] = components[i];
-      }
-      newComponents[newComponents.Length-1] = C;
-
-      components = newComponents;
+      Components.Add (C);
     }
 
     public void removeAll() {
-      this.components = new ViewComponent[0];
+      Components.Clear();
     }
 
     public void hide() {
@@ -41,8 +34,8 @@ namespace StateFunding {
     }
 
     public void paint() {
-      for (var i = 0; i < components.Length; i++) {
-        ViewComponent C = components [i];
+      for (var i = 0; i < Components.ToArray().Length; i++) {
+        ViewComponent C = Components.ToArray() [i];
         C.paint ();
       }
     }

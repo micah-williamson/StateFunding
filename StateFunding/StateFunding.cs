@@ -11,7 +11,10 @@ namespace StateFunding {
     public ReviewManager ReviewMgr;
     public Instance GameInstance;
 
+    private StateFundingApplicationLauncher AppLauncher;
+
     public StateFunding () {
+      AppLauncher = new StateFundingApplicationLauncher ();
       InitGovernments ();
       InitEvents ();
     }
@@ -110,7 +113,7 @@ namespace StateFunding {
         if ((GameInstance = InstanceConf.loadInstance ()) == null) {
           InstanceConf.createInstance ((Instance Inst) => {
             GameInstance = Inst;
-            ReviewMgr.GenerateReview ();
+            ReviewMgr.CompleteReview ();
             InstanceConf.saveInstance (Inst);
           });
         }
@@ -126,7 +129,7 @@ namespace StateFunding {
           int year = (int)(Planetarium.GetUniversalTime () / 60 / 60 / 6 / 426);
           if (year > ReviewMgr.LastReview ().year) {
             Debug.Log ("Happy New Year!");
-            ReviewMgr.GenerateReview ();
+            ReviewMgr.CompleteReview ();
           }
         }
       }
@@ -136,18 +139,22 @@ namespace StateFunding {
     // Events
 
     public void OnCrewKilled(EventReport Evt) {
+      Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrewLeftForDead(ProtoCrewMember Crew, int id) {
+      Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
     }
 
     public void OnCrash(EventReport Evt) {
+      Debug.LogWarning ("VESSEL DESTROYED");
       GameInstance.ActiveReview.vesselsDestroyed++;
     }
 
     public void OnCrashSplashdown(EventReport Evt) {
+      Debug.LogWarning ("VESSEL DESTROYED");
       GameInstance.ActiveReview.vesselsDestroyed++;
     }
 

@@ -5,46 +5,64 @@ using System.Collections;
 namespace StateFunding {
   public class ReviewManager: MonoBehaviour {
 
-    private ReviewApplicationLauncher AppLauncher;
-
-    public ReviewManager () {
-      AppLauncher = new ReviewApplicationLauncher ();
-    }
-
-    public void GenerateReview () {
+    public void CompleteReview () {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
       Review Rev = Inst.ActiveReview;
-      Rev.po = Inst.po;
-      Rev.sc = Inst.sc;
-      Rev.year = (int)(Planetarium.GetUniversalTime()/60/60/6/426);
+      Rev.touch ();
 
-      IEnumerator Kerbals = HighLogic.CurrentGame.CrewRoster.Crew.GetEnumerator();
+      // Closed for business
+      Rev.pastReview = true;
 
-      while(Kerbals.MoveNext()) {
-        ProtoCrewMember Kerbal = (ProtoCrewMember)Kerbals.Current;
-        if (Kerbal.rosterStatus.ToString() == "Assigned") {
-          Rev.activeKerbals++;
-        }
-      }
+      // Move review to past review
+      Inst.addReview (Rev);
 
+      // Start a new review
+      Inst.ActiveReview = new Review ();
+
+      // Apply PO/SC decay on instance
+      ApplyDecay ();
+
+      // Apply funds from Review
+      Debug.Log("Adding Funds: " + Rev.funds);
+      Funding.Instance.AddFunds (Rev.funds, TransactionReasons.None);
+
+      // Notify player that a review is available
       ReviewToastView Toast = new ReviewToastView (Rev);
 
-      ApplyFunding (Rev);
+      // Save the instance and game
+      StateFundingGlobal.fetch.InstanceConf.saveInstance (Inst);
+      GamePersistence.SaveGame ("persistent", HighLogic.SaveFolder, SaveMode.OVERWRITE);
 
       Debug.Log ("Generated Review");
     }
 
-    public void ApplyFunding(Review Rev) {
+    public void ApplyDecay() {
+      Debug.Log ("Applying Decay");
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      if (Inst.po > 0) {
+        int newPO = Inst.po - (int)Math.Ceiling (Inst.po * 0.2);
+        newPO = Math.Max (0, newPO);
 
-      Funding.Instance.AddFunds (Rev.calcFunds (), TransactionReasons.None);
+        Inst.po = newPO;
+      } else {
+        int newPO = Inst.po += (int)Math.Ceiling (Inst.po * -0.2);
+        newPO = Math.Min (0, newPO);
 
-      Inst.addReview (Inst.ActiveReview);
-      Inst.ActiveReview = new Review ();
+        Inst.po = newPO;
+      }
 
-      StateFundingGlobal.fetch.InstanceConf.saveInstance (Inst);
-      GamePersistence.SaveGame ("persistent", HighLogic.SaveFolder, SaveMode.OVERWRITE);
+      if (Inst.sc > 0) {
+        int newSC = Inst.sc - (int)Math.Ceiling (Inst.sc * 0.2);
+        newSC = Math.Max (0, newSC);
+
+        Inst.sc = newSC;
+      } else {
+        int newSC = Inst.sc += (int)Math.Ceiling (Inst.sc * -0.2);
+        newSC = Math.Min (0, newSC);
+
+        Inst.sc = newSC;
+      }
     }
 
     public void OpenReview(Review Rev) {
