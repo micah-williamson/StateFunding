@@ -58,6 +58,8 @@
     <Compile Include="Review\ReviewApplicationLauncher.cs" />
     <Compile Include="Review\ReviewHubView.cs" />
     <Compile Include="ViewComponents\ViewReviewButton.cs" />
+    <Compile Include="Helpers\VesselHelper.cs" />
+    <Compile Include="Helpers\KerbalHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
@@ -148,6 +150,7 @@
     <Folder Include="ViewComponents\" />
     <Folder Include="assets\" />
     <Folder Include="Review\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

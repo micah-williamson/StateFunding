@@ -15,18 +15,8 @@ namespace StateFunding {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
       Review Rev = Inst.ActiveReview;
-      Rev.po = Inst.po;
-      Rev.sc = Inst.sc;
       Rev.year = (int)(Planetarium.GetUniversalTime()/60/60/6/426);
-
-      IEnumerator Kerbals = HighLogic.CurrentGame.CrewRoster.Crew.GetEnumerator();
-
-      while(Kerbals.MoveNext()) {
-        ProtoCrewMember Kerbal = (ProtoCrewMember)Kerbals.Current;
-        if (Kerbal.rosterStatus.ToString() == "Assigned") {
-          Rev.activeKerbals++;
-        }
-      }
+      Rev.touch ();
 
       ReviewToastView Toast = new ReviewToastView (Rev);
 

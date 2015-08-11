@@ -5,10 +5,24 @@ namespace StateFunding {
     public CoverageReport () {}
 
     [Persistent]
-    string entity;
+    public string entity;
 
     [Persistent]
-    float coverage;
+    public int satCount = 0;
+
+    [Persistent]
+    public int satCountForFullCoverage = 0;
+
+    [Persistent]
+    public float coverage = 0;
+
+    public void update() {
+      if (satCount == 0) {
+        coverage = 0;
+      } else {
+        coverage = satCountForFullCoverage / Math.Min (satCount, satCountForFullCoverage);
+      }
+    }
   }
 }
 
