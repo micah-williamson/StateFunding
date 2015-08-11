@@ -5,14 +5,8 @@ using System.Collections;
 namespace StateFunding {
   public class Review {
     public Review () {
-      Init (StateFundingGlobal.fetch.GameInstance);
-    }
+      // Initialize coverage for Celestial Bodies (other than the Sun)
 
-    public Review (Instance Inst) {
-      Init (Inst);
-    }
-
-    private void Init(Instance Inst) {
       CelestialBody[] Bodies = FlightGlobals.Bodies.ToArray ();
       Coverages = new CoverageReport [Bodies.Length-1];
 
@@ -50,6 +44,9 @@ namespace StateFunding {
     public CoverageReport[] Coverages;
 
     [Persistent]
+    public int funds = 0;
+
+    [Persistent]
     public int kerbalDeaths = 0;
 
     [Persistent]
@@ -58,9 +55,8 @@ namespace StateFunding {
     [Persistent]
     public int po = 0;
 
-    // TODO
     [Persistent]
-    public int poChange = 0;
+    public bool pastReview = false;
 
     [Persistent]
     public int miningRigs = 0;
@@ -71,17 +67,12 @@ namespace StateFunding {
     [Persistent]
     public int sc = 0;
 
-    // TODO
-    [Persistent]
-    public int scChange = 0;
-
     [Persistent]
     public int orbitalScienceStations = 0;
 
     [Persistent]
     public int planetaryScienceStations = 0;
 
-    // TODO
     [Persistent]
     public int strandedKerbals = 0;
 
@@ -104,8 +95,8 @@ namespace StateFunding {
 
     private void UpdatePOSC() {
       Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
-      po = GameInstance.Gov.startingPO;
-      sc = GameInstance.Gov.startingSC;
+      po = GameInstance.po;
+      sc = GameInstance.sc;
     }
 
     private void UpdateCoverage() {
@@ -148,20 +139,23 @@ namespace StateFunding {
     }
 
     public void touch() {
-      UpdatePOSC ();
-      UpdateCoverage ();
-      UpdateActiveKerbals ();
-      UpdateMiningRigs ();
-      UpdateScienceStations ();
+      if (!pastReview) {
+        UpdatePOSC ();
+        UpdateCoverage ();
+        UpdateActiveKerbals ();
+        UpdateMiningRigs ();
+        UpdateScienceStations ();
+        UpdateFunds ();
+      } else {
+        Debug.LogError ("Cannot touch a past review. It's properties are already set");
+      }
     }
 
-    public int CalcPO() {
+    public int FinalPO() {
       int tmpPo = po;
 
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
       Government Gov = Inst.Gov;
-
-      touch ();
 
       tmpPo -= (int)(5 * kerbalDeaths * Gov.poPenaltyModifier);
       tmpPo += (int)(3 * activeKerbals * Gov.poModifier);
@@ -170,13 +164,11 @@ namespace StateFunding {
       return tmpPo;
     }
 
-    public int CalcSC() {
+    public int FinalSC() {
       int tmpSc = sc;
 
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
       Government Gov = Inst.Gov;
-
-      touch ();
 
       tmpSc -= (int)(3 * (vesselsDestroyed / 3) * Gov.scPenaltyModifier);
       tmpSc -= (int)(5 * contractsFailed * Gov.scPenaltyModifier);
@@ -185,24 +177,23 @@ namespace StateFunding {
       return tmpSc;
     }
 
-    public float CalcFunds() {
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
-
-      return (float)((float)(CalcPO() + CalcSC()) / 10000)*(float)Inst.Gov.gdp*(float)Inst.Gov.budget;
+    private void UpdateFunds() {
+      if (!pastReview) {
+        Instance Inst = StateFundingGlobal.fetch.GameInstance;
+        funds = (int)(((float)(FinalPO () + FinalSC ()) / 10000) * (float)Inst.Gov.gdp * (float)Inst.Gov.budget);
+      } else {
+        Debug.LogError ("Cannot calculate funds on a past review. The funds are already calculated.");
+      }
     }
 
     public string GetText() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      float funds = CalcFunds ();
-      po = CalcPO ();
-      sc = CalcSC ();
-
       return "Yearly Review:\n" +
              "--------------\n\n" +
              "Funding: " + funds + "\n\n" +
-             "Public Opinion: " + po + " (" + poChange + " Change)\n" +
-             "State Confidence: " + sc + " (" + scChange + " Change)\n\n" +
+             "Public Opinion: " + po + "\n" +
+             "State Confidence: " + sc + "\n\n" +
              "Active Kerbals: " + activeKerbals + "\n" +
              "Satellite Coverage: " + satelliteCoverage + "\n" +
              "Active Mining Rigs: " + miningRigs + "\n" +
