@@ -31,7 +31,6 @@ namespace StateFunding {
       SideMenu.Add(new ViewButton("Mining Rigs", LoadMiningRigs));
       SideMenu.Add(new ViewButton("Kerbals", LoadKerbals));
       SideMenu.Add(new ViewButton("Past Reviews", LoadPastReviews));
-      SideMenu.Add(new ViewButton ("SF Guide", LoadGuide));
 
       for (var i = 0; i < SideMenu.ToArray ().Length; i++) {
         ViewButton Btn = (ViewButton)SideMenu.ToArray () [i];
@@ -101,7 +100,7 @@ namespace StateFunding {
         CoverageLabel.setWidth (Window.getWidth () - 140);
 
         if (Coverage.coverage <= 0.25) {
-          CoverageLabel.setColor (Color.red);
+          CoverageLabel.setColor (Color.white);
         } else if (Coverage.coverage <= .75) {
           CoverageLabel.setColor (Color.yellow);
         } else {
@@ -279,7 +278,7 @@ namespace StateFunding {
         Color color = Color.green;
         if (KerbalHelper.IsStranded (Kerb)) {
           state = "Stranded";
-          color = Color.red;
+          color = Color.white;
         }
 
         string label = Kerb.name + " (" + state + ")";

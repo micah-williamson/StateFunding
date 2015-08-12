@@ -26,13 +26,11 @@ namespace StateFunding {
         Instance Inst = new Instance ();
         ConfigNode.LoadObjectFromConfig (Inst, CnfNode);
 
-        switch (Inst.govName) {
-          case "USK":
-            Inst.Gov = StateFundingGlobal.fetch.USK;
-            break;
-          case "USSK":
-            Inst.Gov = StateFundingGlobal.fetch.USSK;
-            break;
+        for (int i = 0; i < StateFundingGlobal.fetch.Governments.ToArray ().Length; i++) {
+          Government Gov = StateFundingGlobal.fetch.Governments.ToArray () [i];
+          if (Gov.name == Inst.govName) {
+            Inst.Gov = Gov;
+          }
         }
 
         return Inst;

@@ -22,7 +22,7 @@ namespace StateFunding {
         this.getTopLeftX (),
         this.getTopLeftY (),
         this.getWidth (),
-        this.getHeight ()), title);
+        this.getHeight ()), title, HighLogic.Skin.window);
     }
   }
 }

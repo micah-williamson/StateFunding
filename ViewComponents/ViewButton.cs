@@ -18,7 +18,7 @@ namespace StateFunding {
         this.getTopLeftX (),
         this.getTopLeftY (),
         this.getWidth (),
-        this.getHeight ()), text)) {
+        this.getHeight ()), text, HighLogic.Skin.button)) {
         callback ();
       }
     }

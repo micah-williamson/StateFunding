@@ -158,6 +158,7 @@
     <Folder Include="Instance\Views\" />
     <Folder Include="StateFunding\" />
     <Folder Include="StateFunding\Views\" />
+    <Folder Include="data\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -178,6 +179,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\cashmoney.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\governments.settings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
