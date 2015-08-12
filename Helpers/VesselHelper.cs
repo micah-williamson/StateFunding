@@ -6,6 +6,13 @@ using System.Collections.Generic;
 namespace StateFunding {
   public static class VesselHelper {
 
+    public static ConfigNode[] ModuleAliases;
+
+    public static void LoadAliases() {
+      ConfigNode AliasConfig = ConfigNode.Load ("GameData/StateFunding/data/modulealiases.settings");
+      ModuleAliases = AliasConfig.GetNode ("AliasConfig").GetNodes ();
+    }
+
     public static bool HasLiquidFuel(Vessel Vsl) {
       ProtoPartModuleSnapshot[] LiquidFuelModules = VesselHelper.GetModules (Vsl, "LiquidFuel");
       for (var i = 0; i < LiquidFuelModules.Length; i++) {
@@ -41,7 +48,7 @@ namespace StateFunding {
       return ReturnModules.ToArray ();
     }
 
-    public static Vessel[] GetVesselsWithModules(string[] modules) {
+    public static Vessel[] GetVesselsWithModuleAliases(string[] aliases) {
       List<Vessel> ReturnVessels = new List<Vessel>();
 
       Vessel[] Vessels = (Vessel[])FlightGlobals.Vessels.ToArray();
@@ -49,8 +56,8 @@ namespace StateFunding {
         Vessel Vsl = Vessels [i];
         bool hasAllModules = true;
 
-        for (int k = 0; k < modules.Length; k++) {
-          if(!VesselHasModule(Vsl, modules[k])) {
+        for (int k = 0; k < aliases.Length; k++) {
+          if(!VesselHasModuleAlias(Vsl, aliases[k])) {
             hasAllModules = false;
           }
         }
@@ -63,7 +70,7 @@ namespace StateFunding {
       return ReturnVessels.ToArray();
     }
 
-    public static bool VesselHasModule(Vessel Vsl, string module) {
+    public static bool VesselHasModuleAlias(Vessel Vsl, string alias) {
       ProtoPartSnapshot[] Parts = (ProtoPartSnapshot[])Vsl.protoVessel.protoPartSnapshots.ToArray();
       for (int k = 0; k < Parts.Length; k++) {
         ProtoPartSnapshot Prt = Parts [k];
@@ -71,8 +78,28 @@ namespace StateFunding {
         for (int j = 0; j < Modules.Length; j++) {
           ProtoPartModuleSnapshot Module = Modules [j];
 
-          if (Module.moduleValues.GetValue ("name") == module) {
+          if (ModuleInAlias(Module, alias)) {
             return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    public static bool ModuleInAlias(ProtoPartModuleSnapshot Module, string alias) {
+      for (int i = 0; i < ModuleAliases.Length; i++) {
+        ConfigNode ModuleAlias = ModuleAliases [i];
+
+        if (ModuleAlias.GetValue ("name") == alias) {
+
+          ConfigNode[] Modules = ModuleAlias.GetNode("Modules").GetNodes ();
+
+          for (int k = 0; k < Modules.Length; k++) {
+            ConfigNode Mod = Modules [k];
+            if (Mod.GetValue ("name") == Module.moduleValues.GetValue("name")) {
+              return true;
+            }
           }
         }
       }
@@ -83,10 +110,10 @@ namespace StateFunding {
     public static Vessel[] GetOrbitingScienceStations() {
       List<Vessel> ReturnVessels = new List<Vessel>();
 
-      Vessel[] ScienceLabs = VesselHelper.GetVesselsWithModules(new string[] {
-        "ModuleDeployableSolarPanel",
-        "ModuleDataTransmitter",
-        "ModuleScienceLab"
+      Vessel[] ScienceLabs = VesselHelper.GetVesselsWithModuleAliases(new string[] {
+        "Energy",
+        "Communication",
+        "ScienceLab"
       });
 
       for (var i = 0; i < ScienceLabs.Length; i++) {
@@ -103,10 +130,10 @@ namespace StateFunding {
     public static Vessel[] GetLandedScienceStations() {
       List<Vessel> ReturnVessels = new List<Vessel>();
 
-      Vessel[] ScienceLabs = VesselHelper.GetVesselsWithModules(new string[] {
-        "ModuleDeployableSolarPanel",
-        "ModuleDataTransmitter",
-        "ModuleScienceLab"
+      Vessel[] ScienceLabs = VesselHelper.GetVesselsWithModuleAliases(new string[] {
+        "Energy",
+        "Communication",
+        "ScienceLab"
       });
 
       for (var i = 0; i < ScienceLabs.Length; i++) {
@@ -139,10 +166,10 @@ namespace StateFunding {
     public static Vessel[] GetMiningRigs() {
       List<Vessel> ReturnVessels = new List<Vessel>();
 
-      Vessel[] MiningRigs = VesselHelper.GetVesselsWithModules(new string[] {
-        "ModuleDeployableSolarPanel",
-        "ModuleDataTransmitter",
-        "ModuleResourceHarvester"
+      Vessel[] MiningRigs = VesselHelper.GetVesselsWithModuleAliases(new string[] {
+        "Energy",
+        "Communication",
+        "Drill"
       });
 
       for (var i = 0; i < MiningRigs.Length; i++) {
@@ -161,10 +188,10 @@ namespace StateFunding {
     public static Vessel[] GetSatellites() {
       List<Vessel> ReturnVessels = new List<Vessel>();
 
-      Vessel[] Satellites = VesselHelper.GetVesselsWithModules(new string[] {
-        "ModuleDeployableSolarPanel",
-        "ModuleDataTransmitter",
-        "ModuleSAS"
+      Vessel[] Satellites = VesselHelper.GetVesselsWithModuleAliases(new string[] {
+        "Energy",
+        "Communication",
+        "AutonomousCommand"
       });
 
       for (int i = 0; i < Satellites.Length; i++) {
