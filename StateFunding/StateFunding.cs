@@ -65,6 +65,7 @@ namespace StateFunding {
       Debug.Log ("StateFunding Mod Loading");
       InstanceConf = new InstanceConfig ();
       ReviewMgr = new ReviewManager ();
+      VesselHelper.LoadAliases ();
       loadSave ();
       Debug.Log ("StateFunding Mod Loaded");
     }

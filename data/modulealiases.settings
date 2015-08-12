@@ -1,0 +1,66 @@
+﻿AliasConfig
+{
+	Item 
+	{
+		name = AutonomousCommand
+		Modules
+		{
+			Item
+			{
+				name = ModuleSAS
+			}
+			Item
+			{
+				name = ModuleSPU
+			}
+		}
+	}
+	Item 
+	{
+		name = Communication
+		Modules
+		{
+			Item
+			{
+				name = ModuleDataTransmitter
+			}
+			Item
+			{
+				name = ModuleRTAntenna
+			}
+		}
+	}
+	Item 
+	{
+		name = Energy
+		Modules
+		{
+			Item
+			{
+				name = ModuleDeployableSolarPanel
+			}
+		}
+	}
+	Item 
+	{
+		name = Drill
+		Modules
+		{
+			Item
+			{
+				name = ModuleResourceHarvester
+			}
+		}
+	}
+	Item
+	{
+		name = ScienceLab
+		Modules
+		{
+			Item
+			{
+				name = ModuleScienceLab
+			}
+		}
+	}
+}
