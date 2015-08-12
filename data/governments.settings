@@ -1,0 +1,31 @@
+﻿Governments
+{
+	Item
+	{
+		name = USK
+		longName = United States of Kirba
+		poModifier = 2
+		poPenaltyModifier = 4
+		scModifier = 0.5
+		scPenaltyModifier = 0.5
+		startingPO = 20
+		startingSC = 30
+		budget = 0.2
+		gdp = 80000000
+		description = For the people, by the people. At least that's what they say. With the USK the peoples opinions have a greater impact on your funding. Their hearts pour out for Kerbals, not robots and machines. Because of this, the more Kerbals on missions the more interested the people of USK will be in funding the your space program. But there's an equal- well not really equal- reaction to every action. While having Kerbals on missions is crucial to funding, Kerbal death will be devastating in performance reviews. Every life is special and there isn't much room for failure
+	}
+	Item
+	{
+		name = USSK
+		longName = The Union of Soviet Socialist Kerbals
+		poModifier = 0.5
+		poPenaltyModifier = 0.5
+		scModifier = 2
+		scPenaltyModifier = 4
+		startingPO = 50
+		startingSC = 250
+		budget = 0.2
+		gdp = 10000000
+		description = The needs of the many outweigh the needs of the few. The USSK are more interested in results and it's not as important how you get those results. While the citizens care greatly about their comrades in space, the governemnt isn't all too revealing about their operations and furthermore don't care too much about the peoples opinions anyway. Kerbal achievement and death will not reach the morning newspaper of many individuals in this country and as a result the impact of such achievements and failures will be muted. A greater reliance on unmaned vehicles and surveilance will be your best bet for continued funding.
+	}
+}

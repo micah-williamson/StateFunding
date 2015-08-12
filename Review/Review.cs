@@ -161,7 +161,7 @@ namespace StateFunding {
     }
 
     public void UpdateYear() {
-      year = (int)(Planetarium.GetUniversalTime()/60/60/6/426);
+      year = (int)(Planetarium.GetUniversalTime() / 60 / 60 / 6 / 426 * 4);
     }
 
     public void UpdateFinalPO() {
@@ -203,13 +203,13 @@ namespace StateFunding {
 
     private void UpdateFunds() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
-      funds = (int)(((float)(finalPO + finalSC) / 10000) * (float)Inst.Gov.gdp * (float)Inst.Gov.budget);
+      funds = (int)(((float)(finalPO + finalSC) / 10000 / 4) * (float)Inst.Gov.gdp * (float)Inst.Gov.budget);
     }
 
     public string GetText() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      return "# Review for Year:" + year + "\n\n" +
+      return "# Review for Quarter: " + year + "\n\n" +
              "Funding: " + funds + "\n\n" +
              "Public Opinion: " + po + "\n" +
              "State Confidence: " + sc + "\n" +

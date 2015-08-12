@@ -75,7 +75,7 @@ namespace StateFunding {
     }
 
     private void createGovernmentMenu() {
-      for (int i = 0; i < StateFundingGlobal.fetch.Governments.Count; i++) {
+      for (int i = 0; i < StateFundingGlobal.fetch.Governments.ToArray().Length; i++) {
         Government Gov = (Government)StateFundingGlobal.fetch.Governments.ToArray()[i];
         ViewGovernmentButton GovBtn = new ViewGovernmentButton (Gov, SelectGovernment);
         GovBtn.setRelativeTo (Image);
@@ -93,7 +93,7 @@ namespace StateFunding {
     private void SelectGovernment(Government Gov) {
       SelectedGovernment = Gov;
       GovernmentDescription.label = Gov.description;
-      GovernmentGameplayDescription.label = Gov.gameplayDescription;
+      GovernmentGameplayDescription.label = Gov.GetGameplayDescription();
       Confirm.text = "Select " + Gov.name;
     }
 

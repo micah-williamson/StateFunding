@@ -18,7 +18,7 @@ namespace StateFunding {
         this.getTopLeftX (),
         this.getTopLeftY (),
         this.getWidth (),
-        this.getHeight ()), "Year " + Rev.year)) {
+        this.getHeight ()), "Quarter " + Rev.year, HighLogic.Skin.button)) {
         callback (Rev);
       }
     }
