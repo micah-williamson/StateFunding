@@ -74,6 +74,12 @@ namespace StateFunding {
           if (Module.moduleValues.GetValue ("name") == module) {
             return true;
           }
+		  //if the module being searched for is ModuleDataTransmitter (stock antenna), and that module was not found, now look for ModuleRTAntenna, the RemoteTech Antenna Module.
+		  if ("ModuleDataTransmitter" == module) {
+			  if (Module.moduleValues.GetValue ("name") == "ModuleRTAntenna") {
+				  return true;
+			  }
+		  }
         }
       }
 
@@ -88,7 +94,7 @@ namespace StateFunding {
         "ModuleDataTransmitter",
         "ModuleScienceLab"
       });
-
+    
       for (var i = 0; i < ScienceLabs.Length; i++) {
         Vessel ScienceLab = ScienceLabs [i];
 
@@ -184,4 +190,3 @@ namespace StateFunding {
 
   }
 }
-
