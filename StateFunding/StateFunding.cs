@@ -15,9 +15,7 @@ namespace StateFunding {
     private StateFundingApplicationLauncher AppLauncher;
 
     public StateFunding () {
-      AppLauncher = new StateFundingApplicationLauncher ();
-      InitGovernments ();
-      InitEvents ();
+      load ();
     }
 
     private void InitGovernments () {
@@ -63,6 +61,9 @@ namespace StateFunding {
 
     public void load () {
       Debug.Log ("StateFunding Mod Loading");
+      AppLauncher = new StateFundingApplicationLauncher ();
+      InitGovernments ();
+      InitEvents ();
       InstanceConf = new InstanceConfig ();
       ReviewMgr = new ReviewManager ();
       loadSave ();
@@ -116,13 +117,17 @@ namespace StateFunding {
     }
 
     public void OnCrash(EventReport Evt) {
-      Debug.LogWarning ("VESSEL DESTROYED");
-      GameInstance.ActiveReview.vesselsDestroyed++;
+      if (VesselHelper.PartHasModuleAlias (Evt.origin, "Command") || VesselHelper.PartHasModuleAlias (Evt.origin, "AutonomousCommand")) {
+        Debug.LogWarning ("VESSEL DESTROYED");
+        GameInstance.ActiveReview.vesselsDestroyed++;
+      }
     }
 
     public void OnCrashSplashdown(EventReport Evt) {
-      Debug.LogWarning ("VESSEL DESTROYED");
-      GameInstance.ActiveReview.vesselsDestroyed++;
+      if (VesselHelper.PartHasModuleAlias(Evt.origin, "Command") || VesselHelper.PartHasModuleAlias(Evt.origin, "AutonomousCommand")) {
+        Debug.LogWarning ("VESSEL DESTROYED");
+        GameInstance.ActiveReview.vesselsDestroyed++;
+      }
     }
 
   }
