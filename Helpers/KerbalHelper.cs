@@ -42,7 +42,10 @@ namespace StateFunding {
 
     public static bool IsStranded(ProtoCrewMember Kerb) {
       Vessel Vsl = GetVessel (Kerb);
-      if (Vsl != null) {
+      if (Vsl != null
+          && Vsl.protoVessel.vesselType != VesselType.Base
+          && Vsl.protoVessel.vesselType != VesselType.Rover
+          && Vsl.protoVessel.vesselType != VesselType.Station) {
         if (!VesselHelper.HasLiquidFuel (Vsl)) {
           Debug.Log ("Vessel has no liquid fuel");
 
