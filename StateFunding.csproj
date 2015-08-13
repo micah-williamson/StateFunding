@@ -60,6 +60,7 @@
     <Compile Include="StateFunding\StateFundingGlobal.cs" />
     <Compile Include="StateFunding\Views\StateFundingHubView.cs" />
     <Compile Include="StateFunding\Views\StateFundingApplicationLauncher.cs" />
+    <Compile Include="ViewComponents\ViewScroll.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">

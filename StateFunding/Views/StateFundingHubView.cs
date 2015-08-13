@@ -80,9 +80,17 @@ namespace StateFunding {
 
       this.addComponent (TotalCoverage);
 
+      ViewScroll CoverageScroll = new ViewScroll ();
+      CoverageScroll.setRelativeTo (Window);
+      CoverageScroll.setWidth (Window.getWidth () - 140);
+      CoverageScroll.setHeight (Window.getHeight () - 160);
+      CoverageScroll.setLeft (140);
+      CoverageScroll.setTop (150);
+
+      this.addComponent (CoverageScroll);
+
       CoverageReport[] Coverages = Rev.Coverages;
 
-      int offsetY = 150;
       int labelHeight = 20;
 
       for (int i = 0; i < Coverages.Length; i++) {
@@ -93,11 +101,11 @@ namespace StateFunding {
                        Math.Round (Coverage.coverage * 100) + "%";
 
         ViewLabel CoverageLabel = new ViewLabel (label);
-        CoverageLabel.setRelativeTo (Window);
-        CoverageLabel.setTop (offsetY + labelHeight + (labelHeight + 5) * i);
-        CoverageLabel.setLeft (140);
+        CoverageLabel.setRelativeTo (CoverageScroll);
+        CoverageLabel.setTop (labelHeight + (labelHeight + 5) * i);
+        CoverageLabel.setLeft (0);
         CoverageLabel.setHeight (labelHeight);
-        CoverageLabel.setWidth (Window.getWidth () - 140);
+        CoverageLabel.setWidth (CoverageScroll.getWidth () - 20);
 
         if (Coverage.coverage <= 0.25) {
           CoverageLabel.setColor (Color.white);
@@ -107,7 +115,7 @@ namespace StateFunding {
           CoverageLabel.setColor (Color.green);
         }
 
-        this.addComponent (CoverageLabel);
+        CoverageScroll.Components.Add (CoverageLabel);
       }
     }
 
@@ -145,9 +153,17 @@ namespace StateFunding {
 
       this.addComponent (TotalCoverage);
 
+      ViewScroll StationsScroll = new ViewScroll ();
+      StationsScroll.setRelativeTo (Window);
+      StationsScroll.setWidth (Window.getWidth () - 140);
+      StationsScroll.setHeight (Window.getHeight () - 160);
+      StationsScroll.setLeft (140);
+      StationsScroll.setTop (150);
+
+      this.addComponent(StationsScroll);
+
       Vessel[] ScienceStations = VesselHelper.GetScienceStations ();
 
-      int offsetY = 150;
       int labelHeight = 20;
 
       for (int i = 0; i < ScienceStations.Length; i++) {
@@ -166,14 +182,14 @@ namespace StateFunding {
         string label = ScienceStation.GetName () + " is " + action + " " + target;
 
         ViewLabel StationLabel = new ViewLabel (label);
-        StationLabel.setRelativeTo (Window);
-        StationLabel.setTop (offsetY + labelHeight + (labelHeight + 5) * i);
-        StationLabel.setLeft (140);
+        StationLabel.setRelativeTo (StationsScroll);
+        StationLabel.setTop (labelHeight + (labelHeight + 5) * i);
+        StationLabel.setLeft (0);
         StationLabel.setHeight (labelHeight);
-        StationLabel.setWidth (Window.getWidth () - 140);
+        StationLabel.setWidth (StationsScroll.getWidth () - 20);
         StationLabel.setColor (Color.white);
 
-        this.addComponent (StationLabel);
+        StationsScroll.Components.Add (StationLabel);
       }
     }
 
@@ -209,9 +225,17 @@ namespace StateFunding {
 
       this.addComponent (TotalCoverage);
 
+      ViewScroll RigsScroll = new ViewScroll ();
+      RigsScroll.setRelativeTo (Window);
+      RigsScroll.setWidth (Window.getWidth () - 140);
+      RigsScroll.setHeight (Window.getHeight () - 160);
+      RigsScroll.setLeft (140);
+      RigsScroll.setTop (150);
+
+      this.addComponent (RigsScroll);
+
       Vessel[] MiningRigs = VesselHelper.GetMiningRigs ();
 
-      int offsetY = 150;
       int labelHeight = 20;
 
       for (int i = 0; i < MiningRigs.Length; i++) {
@@ -220,14 +244,14 @@ namespace StateFunding {
         string label = MiningRig.GetName () + " is Landed At " + MiningRig.mainBody.GetName ();;
 
         ViewLabel MiningLabel = new ViewLabel (label);
-        MiningLabel.setRelativeTo (Window);
-        MiningLabel.setTop (offsetY + labelHeight + (labelHeight + 5) * i);
-        MiningLabel.setLeft (140);
+        MiningLabel.setRelativeTo (RigsScroll);
+        MiningLabel.setTop (labelHeight + (labelHeight + 5) * i);
+        MiningLabel.setLeft (0);
         MiningLabel.setHeight (labelHeight);
-        MiningLabel.setWidth (Window.getWidth () - 140);
+        MiningLabel.setWidth (RigsScroll.getWidth () - 20);
         MiningLabel.setColor (Color.white);
 
-        this.addComponent (MiningLabel);
+        RigsScroll.Components.Add (MiningLabel);
       }
     }
 
@@ -256,19 +280,27 @@ namespace StateFunding {
 
       this.addComponent (DescriptionLabel);
 
-      ViewLabel TotalCoverage = new ViewLabel ("Active Kerbals: " + Rev.activeKerbals + ". Stranded Kerbals: " + Rev.strandedKerbals + ".");
-      TotalCoverage.setRelativeTo (Window);
-      TotalCoverage.setLeft (140);
-      TotalCoverage.setTop (130);
-      TotalCoverage.setColor (Color.white);
-      TotalCoverage.setHeight (30);
-      TotalCoverage.setWidth (Window.getWidth () - 140);
+      ViewLabel ActiveKerbals = new ViewLabel ("Active Kerbals: " + Rev.activeKerbals + ". Stranded Kerbals: " + Rev.strandedKerbals + ".");
+      ActiveKerbals.setRelativeTo (Window);
+      ActiveKerbals.setLeft (140);
+      ActiveKerbals.setTop (130);
+      ActiveKerbals.setColor (Color.white);
+      ActiveKerbals.setHeight (30);
+      ActiveKerbals.setWidth (Window.getWidth () - 140);
 
-      this.addComponent (TotalCoverage);
+      this.addComponent (ActiveKerbals);
+
+      ViewScroll KerbalsScroll = new ViewScroll ();
+      KerbalsScroll.setRelativeTo (Window);
+      KerbalsScroll.setWidth (Window.getWidth () - 140);
+      KerbalsScroll.setHeight (Window.getHeight () - 160);
+      KerbalsScroll.setLeft (140);
+      KerbalsScroll.setTop (150);
+
+      this.addComponent (KerbalsScroll);
 
       ProtoCrewMember[] Kerbals = KerbalHelper.GetKerbals ();
 
-      int offsetY = 150;
       int labelHeight = 20;
 
       for (int i = 0; i < Kerbals.Length; i++) {
@@ -284,14 +316,13 @@ namespace StateFunding {
         string label = Kerb.name + " (" + state + ")";
 
         ViewLabel KerbalLabel = new ViewLabel (label);
-        KerbalLabel.setRelativeTo (Window);
-        KerbalLabel.setTop (offsetY + labelHeight + (labelHeight + 5) * i);
-        KerbalLabel.setLeft (140);
+        KerbalLabel.setRelativeTo (KerbalsScroll);
+        KerbalLabel.setTop (labelHeight + (labelHeight + 5) * i);
+        KerbalLabel.setLeft (0);
         KerbalLabel.setHeight (labelHeight);
-        KerbalLabel.setWidth (Window.getWidth () - 140);
+        KerbalLabel.setWidth (KerbalsScroll.getWidth() - 20);
         KerbalLabel.setColor (color);
-
-        this.addComponent (KerbalLabel);
+        KerbalsScroll.Components.Add (KerbalLabel);
       }
     }
 
@@ -320,39 +351,39 @@ namespace StateFunding {
       Window.title = "Past Reviews";
       Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
 
-      int buttonWidth = 60;
-      int buttonHeight = 20;
+      int buttonWidth = 180;
+      int buttonHeight = 30;
       int buttonMargin = 10;
       int xOffset = 0;
       int yOffset = 0;
+
+      ViewScroll PastReviewsScroll = new ViewScroll ();
+      PastReviewsScroll.setRelativeTo (Window);
+      PastReviewsScroll.setWidth (Window.getWidth () - 140);
+      PastReviewsScroll.setHeight (Window.getHeight () - 50);
+      PastReviewsScroll.setLeft (140);
+      PastReviewsScroll.setTop (40);
+
+      this.addComponent (PastReviewsScroll);
 
       for (int i = GameInstance.getReviews ().Length - 1; i >= 0; i--) {
         Review Rev = GameInstance.getReviews () [i];
 
         ViewReviewButton Btn = new ViewReviewButton (Rev, OnReviewClick);
-        Btn.setRelativeTo (Window);
+        Btn.setRelativeTo (PastReviewsScroll);
 
-        int left = 140 + xOffset * buttonMargin + xOffset * buttonWidth;
-        int top = 40 + yOffset * buttonMargin + yOffset * buttonHeight;
-        int absoluteRight = Window.getTopLeftX() + left + buttonWidth + 10;
-
-        if (absoluteRight > Window.getBottomRightX()) {
-          xOffset = 0;
-          yOffset++;
-
-          left = 140 + xOffset * buttonMargin + xOffset * buttonWidth;
-          top = 40 + yOffset * buttonMargin + yOffset * buttonHeight;
-        }
-
+        int left = 0;
+        int top = yOffset * buttonMargin + yOffset * buttonHeight;
 
         Btn.setLeft (left);
         Btn.setTop (top);
         Btn.setWidth (buttonWidth);
         Btn.setHeight (buttonHeight);
+        Btn.setColor (Color.white);
 
-        xOffset++;
+        yOffset++;
 
-        this.addComponent (Btn);
+        PastReviewsScroll.Components.Add (Btn);
       }
     }
 

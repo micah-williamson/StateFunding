@@ -11,7 +11,7 @@ namespace StateFunding {
     protected float bottom = -1;
 
     protected GUIStyle Style;
-    protected Color color = Color.black;
+    protected Color color = Color.white;
     protected int fontSize = 12;
     protected TextAnchor textAlign = TextAnchor.UpperLeft;
 
