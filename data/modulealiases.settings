@@ -15,6 +15,17 @@
 			}
 		}
 	}
+	Item
+	{
+		name = Command
+		Modules
+		{
+			Item
+			{
+				name = ModuleCommand
+			}
+		}
+	}
 	Item 
 	{
 		name = Communication
