@@ -14,9 +14,7 @@ namespace StateFunding {
 
     private StateFundingApplicationLauncher AppLauncher;
 
-    public StateFunding () {
-      load ();
-    }
+    public StateFunding () {}
 
     private void InitGovernments () {
       Governments = new List<Government> ();
@@ -110,17 +108,20 @@ namespace StateFunding {
     public void OnCrewKilled(EventReport Evt) {
       Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
+      InstanceConf.saveInstance (GameInstance);
     }
 
     public void OnCrewLeftForDead(ProtoCrewMember Crew, int id) {
       Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
+      InstanceConf.saveInstance (GameInstance);
     }
 
     public void OnCrash(EventReport Evt) {
       if (VesselHelper.PartHasModuleAlias (Evt.origin, "Command") || VesselHelper.PartHasModuleAlias (Evt.origin, "AutonomousCommand")) {
         Debug.LogWarning ("VESSEL DESTROYED");
         GameInstance.ActiveReview.vesselsDestroyed++;
+        InstanceConf.saveInstance (GameInstance);
       }
     }
 
@@ -128,6 +129,7 @@ namespace StateFunding {
       if (VesselHelper.PartHasModuleAlias(Evt.origin, "Command") || VesselHelper.PartHasModuleAlias(Evt.origin, "AutonomousCommand")) {
         Debug.LogWarning ("VESSEL DESTROYED");
         GameInstance.ActiveReview.vesselsDestroyed++;
+        InstanceConf.saveInstance (GameInstance);
       }
     }
 

@@ -44,6 +44,8 @@ namespace StateFunding {
       Vessel Vsl = GetVessel (Kerb);
       if (Vsl != null) {
         if (!VesselHelper.HasLiquidFuel (Vsl)) {
+          Debug.Log ("Vessel has no liquid fuel");
+
           if(!VesselHelper.VesselHasModuleAlias(Vsl, "ScienceLab")) {
             if (!VesselHelper.VesselHasModuleAlias (Vsl, "Drill")) {
               return true;

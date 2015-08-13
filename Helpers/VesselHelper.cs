@@ -14,11 +14,16 @@ namespace StateFunding {
     }
 
     public static bool HasLiquidFuel(Vessel Vsl) {
-      ProtoPartModuleSnapshot[] LiquidFuelModules = VesselHelper.GetModules (Vsl, "LiquidFuel");
-      for (var i = 0; i < LiquidFuelModules.Length; i++) {
-        ProtoPartModuleSnapshot LiquidFuelModule = LiquidFuelModules [i];
-        if (int.Parse(LiquidFuelModule.moduleValues.GetValue ("amount")) > 0) {
-          return true;
+      Debug.Log (Vsl.GetName ());
+      ProtoPartSnapshot[] Parts = Vsl.protoVessel.protoPartSnapshots.ToArray();
+      for (var i = 0; i < Parts.Length; i++) {
+        ProtoPartSnapshot Part = Parts [i];
+        ProtoPartResourceSnapshot[] Resources = Part.resources.ToArray ();
+        for (var k = 0; k < Resources.Length; k++) {
+          ProtoPartResourceSnapshot Resrc = Resources [k];
+          if(Resrc.resourceName == "LiquidFuel" && float.Parse(Resrc.resourceValues.GetValue ("amount")) > 0) {
+            return true;
+          }
         }
       }
 
@@ -81,6 +86,20 @@ namespace StateFunding {
           if (ModuleInAlias(Module, alias)) {
             return true;
           }
+        }
+      }
+
+      return false;
+    }
+
+    public static bool PartHasModuleAlias(Part Prt, string alias) {
+      ProtoPartModuleSnapshot[] Modules = Prt.protoPartSnapshot.modules.ToArray ();
+
+      for (int j = 0; j < Modules.Length; j++) {
+        ProtoPartModuleSnapshot Module = Modules [j];
+
+        if (ModuleInAlias (Module, alias)) {
+          return true;
         }
       }
 
