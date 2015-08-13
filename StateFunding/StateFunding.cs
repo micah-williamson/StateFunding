@@ -14,11 +14,7 @@ namespace StateFunding {
 
     private StateFundingApplicationLauncher AppLauncher;
 
-    public StateFunding () {
-      AppLauncher = new StateFundingApplicationLauncher ();
-      InitGovernments ();
-      InitEvents ();
-    }
+    public StateFunding () {}
 
     private void InitGovernments () {
       Governments = new List<Government> ();
@@ -63,8 +59,12 @@ namespace StateFunding {
 
     public void load () {
       Debug.Log ("StateFunding Mod Loading");
+      AppLauncher = new StateFundingApplicationLauncher ();
+      InitGovernments ();
+      InitEvents ();
       InstanceConf = new InstanceConfig ();
       ReviewMgr = new ReviewManager ();
+      VesselHelper.LoadAliases ();
       loadSave ();
       Debug.Log ("StateFunding Mod Loaded");
     }
@@ -108,21 +108,29 @@ namespace StateFunding {
     public void OnCrewKilled(EventReport Evt) {
       Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
+      InstanceConf.saveInstance (GameInstance);
     }
 
     public void OnCrewLeftForDead(ProtoCrewMember Crew, int id) {
       Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
+      InstanceConf.saveInstance (GameInstance);
     }
 
     public void OnCrash(EventReport Evt) {
-      Debug.LogWarning ("VESSEL DESTROYED");
-      GameInstance.ActiveReview.vesselsDestroyed++;
+      if (VesselHelper.PartHasModuleAlias (Evt.origin, "Command") || VesselHelper.PartHasModuleAlias (Evt.origin, "AutonomousCommand")) {
+        Debug.LogWarning ("VESSEL DESTROYED");
+        GameInstance.ActiveReview.vesselsDestroyed++;
+        InstanceConf.saveInstance (GameInstance);
+      }
     }
 
     public void OnCrashSplashdown(EventReport Evt) {
-      Debug.LogWarning ("VESSEL DESTROYED");
-      GameInstance.ActiveReview.vesselsDestroyed++;
+      if (VesselHelper.PartHasModuleAlias(Evt.origin, "Command") || VesselHelper.PartHasModuleAlias(Evt.origin, "AutonomousCommand")) {
+        Debug.LogWarning ("VESSEL DESTROYED");
+        GameInstance.ActiveReview.vesselsDestroyed++;
+        InstanceConf.saveInstance (GameInstance);
+      }
     }
 
   }

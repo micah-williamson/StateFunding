@@ -46,6 +46,10 @@ namespace StateFunding {
     }
 
     public override int getTopLeftX() {
+      if(Relative.GetType() == typeof(ViewScroll)) {
+        return base.getTopLeftX();
+      }
+
       if (percentLeft != -1) {
         return (int)(percentLeft * Relative.getWidth() + Relative.getTopLeftX ());
       } else if (percentRight != -1) {
@@ -58,6 +62,10 @@ namespace StateFunding {
     }
 
     public override int getTopLeftY() {
+      if(Relative.GetType() == typeof(ViewScroll)) {
+        return base.getTopLeftY();
+      }
+
       if (percentTop != -1) {
         return (int)(percentTop * Relative.getHeight () + Relative.getTopLeftY ());
       } else if (percentBottom != -1) {
@@ -70,6 +78,10 @@ namespace StateFunding {
     }
 
     public override int getBottomRightX() {
+      if(Relative.GetType() == typeof(ViewScroll)) {
+        return base.getBottomRightX();
+      }
+
       if (percentWidth != -1) {
         return (int)(percentWidth * Relative.getWidth() + getTopLeftX ());
       }
@@ -78,6 +90,10 @@ namespace StateFunding {
     }
 
     public override int getBottomRightY() {
+      if(Relative.GetType() == typeof(ViewScroll)) {
+        return base.getBottomRightY();
+      }
+
       if (percentHeight != -1) {
         return (int)(percentHeight * Relative.getHeight() + getTopLeftY ());
       }
