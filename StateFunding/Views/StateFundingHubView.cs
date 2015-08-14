@@ -311,6 +311,9 @@ namespace StateFunding {
         if (KerbalHelper.IsStranded (Kerb)) {
           state = "Stranded";
           color = Color.white;
+        } else if (KerbalHelper.QualifiedStranded(Kerb)) {
+          state = "Active [Will be Stranded In " + KerbalHelper.TimeToStranded (Kerb) + " Days!]";
+          color = Color.yellow;
         }
 
         string label = Kerb.name + " (" + state + ")";

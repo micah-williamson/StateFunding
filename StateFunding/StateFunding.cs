@@ -54,6 +54,7 @@ namespace StateFunding {
 
     public void unload() {
       ViewManager.removeAll ();
+      AppLauncher.unload ();
       GameInstance = null;
     }
 
@@ -93,9 +94,9 @@ namespace StateFunding {
       
       if(GameInstance != null) {
         if (GameInstance.getReviews ().Length > 0) {
-          int year = (int)(Planetarium.GetUniversalTime () / 60 / 60 / 6 / 426 * 4);
+          int year = (int)(TimeHelper.Quarters(Planetarium.GetUniversalTime ()));
           if (year > ReviewMgr.LastReview ().year) {
-            Debug.Log ("Happy New Year!");
+            Debug.Log ("Happy New Quarter!");
             ReviewMgr.CompleteReview ();
           }
         }
