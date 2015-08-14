@@ -43,12 +43,31 @@ namespace StateFunding {
     public static bool IsStranded(ProtoCrewMember Kerb) {
       Vessel Vsl = GetVessel (Kerb);
       if (Vsl != null
-          && Vsl.protoVessel.vesselType != VesselType.Base
-          && Vsl.protoVessel.vesselType != VesselType.Rover
-          && Vsl.protoVessel.vesselType != VesselType.Station) {
-        if (!VesselHelper.HasLiquidFuel (Vsl)) {
-          Debug.Log ("Vessel has no liquid fuel");
+        && KerbalHelper.QualifiedStranded(Kerb)
+        && Vsl.missionTime > TimeHelper.ToYears(2)) {
 
+        return true;
+      }
+
+      return false;
+    }
+
+    public static int TimeToStranded(ProtoCrewMember Kerb) {
+      Vessel Vsl = GetVessel (Kerb);
+      if (Vsl != null) {
+        return TimeHelper.Days (TimeHelper.ToYears (2) - Vsl.missionTime);
+      }
+
+      return 0;
+    }
+
+    public static bool QualifiedStranded(ProtoCrewMember Kerb) {
+      Vessel Vsl = GetVessel (Kerb);
+      if (Vsl != null
+        && Vsl.protoVessel.vesselType != VesselType.Base
+        && Vsl.protoVessel.vesselType != VesselType.Rover
+        && Vsl.protoVessel.vesselType != VesselType.Station) {
+        if (!VesselHelper.HasLiquidFuel (Vsl) || !VesselHelper.HasEnergy (Vsl)) {
           if(!VesselHelper.VesselHasModuleAlias(Vsl, "ScienceLab")) {
             if (!VesselHelper.VesselHasModuleAlias (Vsl, "Drill")) {
               return true;

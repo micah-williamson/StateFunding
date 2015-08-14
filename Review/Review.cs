@@ -161,7 +161,7 @@ namespace StateFunding {
     }
 
     public void UpdateYear() {
-      year = (int)(Planetarium.GetUniversalTime() / 60 / 60 / 6 / 426 * 4);
+      year = TimeHelper.Quarters(Planetarium.GetUniversalTime());
     }
 
     public void UpdateFinalPO() {

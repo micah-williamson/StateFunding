@@ -13,15 +13,22 @@ namespace StateFunding {
       ModuleAliases = AliasConfig.GetNode ("AliasConfig").GetNodes ();
     }
 
+    public static bool HasEnergy(Vessel Vsl) {
+      return VesselHelper.HasResource (Vsl, "ElectricCharge");
+    }
+
     public static bool HasLiquidFuel(Vessel Vsl) {
-      Debug.Log (Vsl.GetName ());
+      return VesselHelper.HasResource (Vsl, "LiquidFuel");
+    }
+
+    public static bool HasResource(Vessel Vsl, string resource) {
       ProtoPartSnapshot[] Parts = Vsl.protoVessel.protoPartSnapshots.ToArray();
       for (var i = 0; i < Parts.Length; i++) {
         ProtoPartSnapshot Part = Parts [i];
         ProtoPartResourceSnapshot[] Resources = Part.resources.ToArray ();
         for (var k = 0; k < Resources.Length; k++) {
           ProtoPartResourceSnapshot Resrc = Resources [k];
-          if(Resrc.resourceName == "LiquidFuel" && float.Parse(Resrc.resourceValues.GetValue ("amount")) > 0) {
+          if(Resrc.resourceName == resource && float.Parse(Resrc.resourceValues.GetValue ("amount")) > 0) {
             return true;
           }
         }

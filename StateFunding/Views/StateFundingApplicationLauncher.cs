@@ -6,12 +6,17 @@ using System.IO;
 namespace StateFunding {
   public class StateFundingApplicationLauncher: MonoBehaviour {
     private StateFundingHubView View;
+    private ApplicationLauncherButton Button;
 
     public StateFundingApplicationLauncher () {
       View = new StateFundingHubView ();
       Texture2D Image = new Texture2D (2, 2);
       Image.LoadImage (File.ReadAllBytes ("GameData/StateFunding/assets/cashmoney.png"));
-      ApplicationLauncherButton Button = ApplicationLauncher.Instance.AddModApplication (onTrue, onFalse, onHover, onHoverOut, onEnable, onDisable, ApplicationLauncher.AppScenes.SPACECENTER, Image);
+      Button = ApplicationLauncher.Instance.AddModApplication (onTrue, onFalse, onHover, onHoverOut, onEnable, onDisable, ApplicationLauncher.AppScenes.SPACECENTER, Image);
+    }
+
+    public void unload() {
+      ApplicationLauncher.Instance.RemoveModApplication (Button);
     }
 
     public void onTrue() {
