@@ -96,4 +96,15 @@
 			}
 		}
 	}
+	Item
+	{
+		name = Astroid
+		Modules
+		{
+			Item
+			{
+				name = ModuleAsteroid
+			}
+		}
+	}
 }

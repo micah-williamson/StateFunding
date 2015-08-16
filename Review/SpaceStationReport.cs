@@ -37,6 +37,12 @@ namespace StateFunding {
 
     [Persistent]
     public bool onAstroid = false;
+
+    [Persistent]
+    public int po = 0;
+
+    [Persistent]
+    public int sc = 0;
   }
 }
 

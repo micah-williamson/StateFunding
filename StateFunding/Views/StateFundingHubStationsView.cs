@@ -157,7 +157,7 @@ namespace StateFunding {
       AstroidLabel.setColor (Color.white);
       parent.Components.Add (AstroidLabel);
 
-      ViewLabel SCLabel = new ViewLabel ("PO: " + 0);
+      ViewLabel SCLabel = new ViewLabel ("PO: " + Station.po);
       SCLabel.setRelativeTo (Box);
       SCLabel.setTop (45);
       SCLabel.setLeft (310);
@@ -166,7 +166,7 @@ namespace StateFunding {
       SCLabel.setColor (Color.white);
       parent.Components.Add (SCLabel);
 
-      ViewLabel POLabel = new ViewLabel ("SC: " + 0);
+      ViewLabel POLabel = new ViewLabel ("SC: " + Station.sc);
       POLabel.setRelativeTo (Box);
       POLabel.setTop (65);
       POLabel.setLeft (310);

@@ -165,6 +165,8 @@ namespace StateFunding {
 
     private void UpdateSpaceStations() {
       Debug.Log ("Updating Space Stations");
+
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
       Vessel[] SpcStations = VesselHelper.GetSpaceStations ();
       SpaceStations = new SpaceStationReport[SpcStations.Length];
 
@@ -181,11 +183,38 @@ namespace StateFunding {
         SpcStationReport.scienceLab = VesselHelper.VesselHasModuleAlias (SpcStation, "ScienceLab");
         SpcStationReport.fuel = VesselHelper.GetResourceCount (SpcStation, "LiquidFuel");
         SpcStationReport.ore = VesselHelper.GetResourceCount (SpcStation, "Ore");
+        SpcStationReport.onAstroid = VesselHelper.OnAstroid (SpcStation);
 
         if (SpcStation.Landed) {
           SpcStationReport.entity = SpcStation.landedAt;
         } else {
           SpcStationReport.entity = SpcStation.GetOrbit ().referenceBody.GetName ();
+        }
+
+        SpcStationReport.po = 0;
+        SpcStationReport.sc = 0;
+
+        SpcStationReport.po += (int)(5 * SpcStationReport.crew * GameInstance.Gov.poModifier);
+        SpcStationReport.po += (int)(5 * SpcStationReport.dockedVessels * GameInstance.Gov.poModifier);
+
+        if (SpcStationReport.onAstroid) {
+          SpcStationReport.po += (int)(30 * GameInstance.Gov.poModifier);
+
+          if (SpcStationReport.drill) {
+            SpcStationReport.po += (int)(10 * GameInstance.Gov.poModifier);
+            SpcStationReport.sc += (int)(10 * GameInstance.Gov.poModifier);
+          }
+        }
+
+        SpcStationReport.sc += (int)(2 * SpcStationReport.crewCapacity * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(SpcStationReport.fuel / 200f * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(SpcStationReport.ore / 200f * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(2 * SpcStationReport.dockingPorts * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(2 * SpcStationReport.crewCapacity * GameInstance.Gov.scModifier);
+
+        if (SpcStationReport.scienceLab) {
+          SpcStationReport.po += (int)(10 * GameInstance.Gov.poModifier);
+          SpcStationReport.sc += (int)(10 * GameInstance.Gov.poModifier);
         }
 
         SpaceStations [i] = SpcStationReport;
@@ -194,7 +223,9 @@ namespace StateFunding {
 
     private void UpdateBases() {
       Debug.Log ("Updating Bases");
-      Vessel[] _Bases = VesselHelper.GetSpaceStations ();
+
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      Vessel[] _Bases = VesselHelper.GetBases ();
       Bases = new BaseReport[_Bases.Length];
 
       for (int i = 0; i < _Bases.Length; i++) {
@@ -210,6 +241,29 @@ namespace StateFunding {
         _BaseReport.fuel = VesselHelper.GetResourceCount (Base, "LiquidFuel");
         _BaseReport.ore = VesselHelper.GetResourceCount (Base, "Ore");
         _BaseReport.entity = Base.landedAt;
+
+        _BaseReport.po = 0;
+        _BaseReport.sc = 0;
+
+        _BaseReport.po += (int)(5 * _BaseReport.crew * GameInstance.Gov.poModifier);
+        _BaseReport.po += (int)(5 * _BaseReport.dockedVessels * GameInstance.Gov.poModifier);
+        _BaseReport.po += (int)((BodyHelper.GetBody (Base.landedAt).Radius / 60000f) * (_BaseReport.dockedVessels + 1) * GameInstance.Gov.poModifier);
+
+        _BaseReport.sc += (int)(2 * _BaseReport.crewCapacity * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(_BaseReport.fuel / 200f * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(_BaseReport.ore / 200f * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(2 * _BaseReport.dockingPorts * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(2 * _BaseReport.crewCapacity * GameInstance.Gov.scModifier);
+
+        if (_BaseReport.scienceLab) {
+          _BaseReport.po += (int)(10 * GameInstance.Gov.poModifier);
+          _BaseReport.sc += (int)(10 * GameInstance.Gov.poModifier);
+        }
+
+        if (_BaseReport.drill) {
+          _BaseReport.po += (int)(10 * GameInstance.Gov.poModifier);
+          _BaseReport.sc += (int)(10 * GameInstance.Gov.poModifier);
+        }
 
         Bases [i] = _BaseReport;
       }
@@ -254,6 +308,14 @@ namespace StateFunding {
       tmpPO += (int)(5 * activeKerbals * Gov.poModifier);
       tmpPO += (int)(5 * rovers * Gov.poModifier);
 
+      for (int i = 0; i < SpaceStations.Length; i++) {
+        tmpPO += SpaceStations [i].po;
+      }
+
+      for (int i = 0; i < Bases.Length; i++) {
+        tmpPO += Bases [i].po;
+      }
+
       finalPO = tmpPO;
     }
 
@@ -274,6 +336,14 @@ namespace StateFunding {
       tmpSC += (int)(2 * orbitalScienceStations * Gov.scModifier);
       tmpSC += (int)(5 * planetaryScienceStations * Gov.scModifier);
       tmpSC += (int)(5 * miningRigs * Gov.scModifier);
+
+      for (int i = 0; i < SpaceStations.Length; i++) {
+        tmpSC += SpaceStations [i].sc;
+      }
+
+      for (int i = 0; i < Bases.Length; i++) {
+        tmpSC += Bases [i].sc;
+      }
 
       finalSC = tmpSC;
     }

@@ -31,7 +31,7 @@ namespace StateFunding {
 
     public static bool WorkingWheels(Vessel Vsl) {
       ProtoPartModuleSnapshot[] Wheels = VesselHelper.GetModulesWithAlias (Vsl, "Wheel");
-      if (Wheels.Length > 0) {
+      if (Wheels.Length >= 4) {
         return true;
       }
 
@@ -49,12 +49,12 @@ namespace StateFunding {
     }
 
     public static int GetCrewCapactiy(Vessel Vsl) {
-      Part[] Parts = Vsl.parts.ToArray ();
+      ProtoPartSnapshot[] Parts = Vsl.protoVessel.protoPartSnapshots.ToArray();
       int crewCapacity = 0;
 
       for (int i = 0; i < Parts.Length; i++) {
-        Part Part = Parts [i];
-        crewCapacity = Part.CrewCapacity;
+        ProtoPartSnapshot Part = Parts [i];
+        crewCapacity += Part.protoModuleCrew.Capacity;
       }
 
       return crewCapacity;
@@ -65,20 +65,31 @@ namespace StateFunding {
     }
 
     public static int GetDockedVesselsCount(Vessel Vsl) {
-      ProtoPartSnapshot[] Parts = VesselHelper.GetPartsWithAlias (Vsl, "DockingPort");
-      int useCount = 0;
+      List<uint> MissionIds = new List<uint> ();
+      ProtoPartSnapshot[] Parts = Vsl.protoVessel.protoPartSnapshots.ToArray();
 
-      // TODO: Get use count
-      /**
       for (int i = 0; i < Parts.Length; i++) {
-        ProtoPartSnapshot Part = Parts [i];
-        if (Part.partData.Value("In use?")) {
-          useCount++;
+        uint missionId = Parts [i].missionID;
+        bool found = false;
+        for (int k = 0; k < MissionIds.ToArray ().Length; k++) {
+          uint _missionId = MissionIds.ToArray () [k];
+          if (missionId == _missionId) {
+            found = true;
+          }
+        }
+
+        if (!found) {
+          MissionIds.Add (missionId);
         }
       }
-      */
 
-      return useCount;
+      int missionCount = MissionIds.Count - 1;
+
+      if (OnAstroid (Vsl)) {
+        missionCount--;
+      }
+
+      return missionCount;
     }
 
     public static bool HasResource(Vessel Vsl, string resource) {
@@ -384,13 +395,7 @@ namespace StateFunding {
 
       for (var i = 0; i < MiningRigs.Length; i++) {
         Vessel MiningRig = MiningRigs [i];
-        // Planetary science station
-
-        ProtoPartSnapshot[] Parts = MiningRig.protoVessel.protoPartSnapshots.ToArray();
-
-
-
-        if (MiningRig.Landed
+        if ((MiningRig.Landed || OnAstroid(MiningRig))
           && MiningRig.vesselType != VesselType.Station
           && MiningRig.vesselType != VesselType.Base
           && MiningRig.landedAt != SpaceCenter.Instance.cb.GetName()
@@ -427,6 +432,10 @@ namespace StateFunding {
       }
 
       return ReturnVessels.ToArray ();
+    }
+
+    public static bool OnAstroid(Vessel Vsl) {
+      return VesselHasModuleAlias(Vsl, "Astroid");
     }
 
   }
