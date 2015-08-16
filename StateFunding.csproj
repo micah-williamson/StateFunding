@@ -65,6 +65,15 @@
     <Compile Include="Review\SpaceStationReport.cs" />
     <Compile Include="Helpers\BodyHelper.cs" />
     <Compile Include="Review\BaseReport.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubBasesView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubStationsView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubRoversView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingLabView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubMiningView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubKerbalsView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubCurrentView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubReviewsView.cs" />
+    <Compile Include="StateFunding\Views\StateFundingHubCoverageView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
