@@ -357,22 +357,62 @@ namespace StateFunding {
     public string GetText() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      return "# Review for Quarter: " + year + "\n\n" +
-             "Funding: " + funds + "\n\n" +
-             "Public Opinion: " + po + "\n" +
-             "State Confidence: " + sc + "\n" +
-             "Public Opinion After Modifiers & Decay: " + finalPO + "\n" +
-             "State Confidence After Modifiers & Decay: " + finalSC + "\n\n" +
-             "Active Kerbals: " + activeKerbals + "\n" +
-             "Satellite Coverage: " + Math.Round(satelliteCoverage*100) + "%\n" +
-             "Active Mining Rigs: " + miningRigs + "\n" +
-             "Obital Science Stations: " + orbitalScienceStations + "\n" +
-             "Planetary Science Stations: " + planetaryScienceStations + "\n" +
-             "Govt. Contracts Completed: " + contractsCompleted + "\n" +
-             "Govt. Contracts Failed: " + contractsFailed + "\n" +
-             "Kerbal \"Accidents\": " + kerbalDeaths + "\n" +
-             "Stranded Kerbals: " + strandedKerbals + "\n" +
-             "Vessels Destroyed: " + vesselsDestroyed + "\n";
+      string returnText = "# Review for Quarter: " + year + "\n\n" +
+                          "Funding: " + funds + "\n\n" +
+                          "Public Opinion: " + po + "\n" +
+                          "State Confidence: " + sc + "\n" +
+                          "Public Opinion After Modifiers & Decay: " + finalPO + "\n" +
+                          "State Confidence After Modifiers & Decay: " + finalSC + "\n\n" +
+                          "Active Kerbals: " + activeKerbals + "\n" +
+                          "Satellite Coverage: " + Math.Round(satelliteCoverage*100) + "%\n" +
+                          "Active Mining Rigs: " + miningRigs + "\n" +
+                          "Rovers: " + rovers + "\n" +
+                          "Obital Science Stations: " + orbitalScienceStations + "\n" +
+                          "Planetary Science Stations: " + planetaryScienceStations + "\n" +
+                          "Govt. Contracts Completed: " + contractsCompleted + "\n" +
+                          "Govt. Contracts Failed: " + contractsFailed + "\n" +
+                          "Kerbal \"Accidents\": " + kerbalDeaths + "\n" +
+                          "Stranded Kerbals: " + strandedKerbals + "\n" +
+                          "Vessels Destroyed: " + vesselsDestroyed;
+
+      if (SpaceStations.Length > 0) {
+        returnText += "\n\n== Space Stations ==\n\n";
+        for (int i = 0; i < SpaceStations.Length; i++) {
+          SpaceStationReport StationReport = SpaceStations [i];
+          returnText += "[" + StationReport.name + " Orbiting " + StationReport.entity + "]\n";
+          returnText += "Fuel: " + StationReport.fuel + "\n";
+          returnText += "Ore: " + StationReport.ore + "\n";
+          returnText += "Crew: " + StationReport.crew + "\n";
+          returnText += "Crew Capacity: " + StationReport.crewCapacity + "\n";
+          returnText += "Docked Vessels: " + StationReport.dockedVessels + "\n";
+          returnText += "Docking Ports: " + StationReport.dockingPorts + "\n";
+          returnText += "Has Drill: " + StationReport.drill + "\n";
+          returnText += "Science Lab: " + StationReport.scienceLab + "\n";
+          returnText += "On Astroid: " + StationReport.onAstroid + "\n";
+          returnText += "PO: " + StationReport.po + "\n";
+          returnText += "SC: " + StationReport.sc + "\n\n";
+        }
+      }
+
+      if (Bases.Length > 0) {
+        returnText += "\n\n== Bases ==\n\n";
+        for (int i = 0; i < Bases.Length; i++) {
+          BaseReport Base = Bases [i];
+          returnText += "[" + Base.name + " Landed At " + Base.entity + "]\n";
+          returnText += "Fuel: " + Base.fuel + "\n";
+          returnText += "Ore: " + Base.ore + "\n";
+          returnText += "Crew: " + Base.crew + "\n";
+          returnText += "Crew Capacity: " + Base.crewCapacity + "\n";
+          returnText += "Docked Vessels: " + Base.dockedVessels + "\n";
+          returnText += "Docking Ports: " + Base.dockingPorts + "\n";
+          returnText += "Has Drill: " + Base.drill + "\n";
+          returnText += "Science Lab: " + Base.scienceLab + "\n";
+          returnText += "PO: " + Base.po + "\n";
+          returnText += "SC: " + Base.sc + "\n\n";
+        }
+      }
+
+      return returnText;
           
     }
 
