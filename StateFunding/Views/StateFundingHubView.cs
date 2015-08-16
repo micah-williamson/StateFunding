@@ -26,9 +26,12 @@ namespace StateFunding {
       this.addComponent (Window);
 
       SideMenu.Add(new ViewButton("Current State", LoadCurrentState));
+      SideMenu.Add(new ViewButton("Space Stations", LoadSpaceStations));
+      SideMenu.Add(new ViewButton("Bases", LoadBases));
       SideMenu.Add(new ViewButton("Sat Coverage", LoadSatelliteCoverage));
       SideMenu.Add(new ViewButton("Science Stations", LoadScienceStations));
       SideMenu.Add(new ViewButton("Mining Rigs", LoadMiningRigs));
+      SideMenu.Add(new ViewButton("Rovers", LoadRovers));
       SideMenu.Add(new ViewButton("Kerbals", LoadKerbals));
       SideMenu.Add(new ViewButton("Past Reviews", LoadPastReviews));
 
@@ -116,6 +119,199 @@ namespace StateFunding {
         }
 
         CoverageScroll.Components.Add (CoverageLabel);
+      }
+    }
+
+    private void LoadBases() {
+      reloadBase ();
+
+      Window.title = "Space Stations";
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      Review Rev = GameInstance.ActiveReview;
+      Rev.touch ();
+
+      string Description = "Below is a list of existing Bases. Vessels that are Bases should be labeled as " +
+        "such. Bases increase State Confidence as well as Public Opinion. Bases are scored by the following " +
+        "criteria: Total Fuel, Total Ore, Crew, Crew Capacity, Docking Port Count, Docked Vessels (aka base modules), if it " +
+        "has a science lab, and if it has a drill. Bases must be able to generate their own power. Bases on the home planet " +
+        "(Kerbin in most cases) will not count.";
+
+      ViewLabel DescriptionLabel = new ViewLabel (Description);
+      DescriptionLabel.setRelativeTo (Window);
+      DescriptionLabel.setLeft (140);
+      DescriptionLabel.setTop (20);
+      DescriptionLabel.setColor (Color.white);
+      DescriptionLabel.setHeight (100);
+      DescriptionLabel.setWidth (Window.getWidth () - 140);
+
+      this.addComponent (DescriptionLabel);
+
+      ViewLabel TotalBases = new ViewLabel ("Total Bases: " + Rev.Bases.Length);
+      TotalBases.setRelativeTo (Window);
+      TotalBases.setLeft (140);
+      TotalBases.setTop (130);
+      TotalBases.setColor (Color.white);
+      TotalBases.setHeight (30);
+      TotalBases.setWidth (Window.getWidth () - 140);
+
+      this.addComponent (TotalBases);
+
+      ViewScroll BasesScroll = new ViewScroll ();
+      BasesScroll.setRelativeTo (Window);
+      BasesScroll.setWidth (Window.getWidth () - 140);
+      BasesScroll.setHeight (Window.getHeight () - 160);
+      BasesScroll.setLeft (140);
+      BasesScroll.setTop (150);
+
+      this.addComponent(BasesScroll);
+
+      Vessel[] Bases = VesselHelper.GetBases ();
+
+      int labelHeight = 20;
+
+      for (int i = 0; i < Bases.Length; i++) {
+        Vessel Base = Bases [i];
+
+        string label = Base.GetName () + " is Landed At " + Base.landedAt;
+
+        ViewLabel BaseLabel = new ViewLabel (label);
+        BaseLabel.setRelativeTo (BasesScroll);
+        BaseLabel.setTop (labelHeight + (labelHeight + 5) * i);
+        BaseLabel.setLeft (0);
+        BaseLabel.setHeight (labelHeight);
+        BaseLabel.setWidth (BasesScroll.getWidth () - 20);
+        BaseLabel.setColor (Color.white);
+
+        BasesScroll.Components.Add (BaseLabel);
+      }
+    }
+
+    private void LoadSpaceStations() {
+      reloadBase ();
+
+      Window.title = "Space Stations";
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      Review Rev = GameInstance.ActiveReview;
+      Rev.touch ();
+
+      string Description = "Below is a list of existing Space Stations. Vessels that are Space Stations should be labeled as " +
+        "such. Space Stations increase State Confidence as well as Public Opinion. Space Stations are scored by the following " +
+        "criteria: Total Fuel, Total Ore, Crew, Crew Capacity, Docking Port Count, Docked Vessels (aka station modules) and if it " +
+        "has a science lab. If the Station is landed on an astroid it will also get a bonus- higher bonus if you have a drill. Stations " +
+        "must be able to generate their own power.";
+
+      ViewLabel DescriptionLabel = new ViewLabel (Description);
+      DescriptionLabel.setRelativeTo (Window);
+      DescriptionLabel.setLeft (140);
+      DescriptionLabel.setTop (20);
+      DescriptionLabel.setColor (Color.white);
+      DescriptionLabel.setHeight (100);
+      DescriptionLabel.setWidth (Window.getWidth () - 140);
+
+      this.addComponent (DescriptionLabel);
+
+      ViewLabel TotalStations = new ViewLabel ("Total Stations: " + Rev.SpaceStations.Length);
+      TotalStations.setRelativeTo (Window);
+      TotalStations.setLeft (140);
+      TotalStations.setTop (130);
+      TotalStations.setColor (Color.white);
+      TotalStations.setHeight (30);
+      TotalStations.setWidth (Window.getWidth () - 140);
+
+      this.addComponent (TotalStations);
+
+      ViewScroll StationsScroll = new ViewScroll ();
+      StationsScroll.setRelativeTo (Window);
+      StationsScroll.setWidth (Window.getWidth () - 140);
+      StationsScroll.setHeight (Window.getHeight () - 160);
+      StationsScroll.setLeft (140);
+      StationsScroll.setTop (150);
+
+      this.addComponent(StationsScroll);
+
+      Vessel[] Stations = VesselHelper.GetSpaceStations ();
+
+      int labelHeight = 20;
+
+      for (int i = 0; i < Stations.Length; i++) {
+        Vessel Station = Stations [i];
+        string target;
+
+        string label = Station.GetName () + " is Orbiting " + Station.GetOrbit().referenceBody.GetName ();
+
+        ViewLabel StationLabel = new ViewLabel (label);
+        StationLabel.setRelativeTo (StationsScroll);
+        StationLabel.setTop (labelHeight + (labelHeight + 5) * i);
+        StationLabel.setLeft (0);
+        StationLabel.setHeight (labelHeight);
+        StationLabel.setWidth (StationsScroll.getWidth () - 20);
+        StationLabel.setColor (Color.white);
+
+        StationsScroll.Components.Add (StationLabel);
+      }
+    }
+
+    private void LoadRovers() {
+      reloadBase ();
+
+      Window.title = "Rovers";
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      Review Rev = GameInstance.ActiveReview;
+      Rev.touch ();
+
+      string Description = "Below is a list of existing Rovers. Having more Rovers increases Public Opinion." +
+        "Vessels that are rovers should be labeled as a Rover. They should have at least 4 wheels but can have more." +
+        "If any wheels on the rover are broken they must be repaired. Rovers must has energy and be landed on a body other " +
+        "than the home planet (Kerbin in most cases) to count.";
+
+      ViewLabel DescriptionLabel = new ViewLabel (Description);
+      DescriptionLabel.setRelativeTo (Window);
+      DescriptionLabel.setLeft (140);
+      DescriptionLabel.setTop (20);
+      DescriptionLabel.setColor (Color.white);
+      DescriptionLabel.setHeight (100);
+      DescriptionLabel.setWidth (Window.getWidth () - 140);
+
+      this.addComponent (DescriptionLabel);
+
+      ViewLabel TotalRovers = new ViewLabel ("Total Rovers: " + Rev.rovers);
+      TotalRovers.setRelativeTo (Window);
+      TotalRovers.setLeft (140);
+      TotalRovers.setTop (130);
+      TotalRovers.setColor (Color.white);
+      TotalRovers.setHeight (30);
+      TotalRovers.setWidth (Window.getWidth () - 140);
+
+      this.addComponent (TotalRovers);
+
+      ViewScroll RoversScroll = new ViewScroll ();
+      RoversScroll.setRelativeTo (Window);
+      RoversScroll.setWidth (Window.getWidth () - 140);
+      RoversScroll.setHeight (Window.getHeight () - 160);
+      RoversScroll.setLeft (140);
+      RoversScroll.setTop (150);
+
+      this.addComponent(RoversScroll);
+
+      Vessel[] Rovers = VesselHelper.GetRovers ();
+
+      int labelHeight = 20;
+
+      for (int i = 0; i < Rovers.Length; i++) {
+        Vessel Rover = Rovers [i];
+        string target;
+
+        string label = Rover.GetName () + " is Landed at " + Rover.mainBody.GetName ();
+
+        ViewLabel RoverLabel = new ViewLabel (label);
+        RoverLabel.setRelativeTo (RoversScroll);
+        RoverLabel.setTop (labelHeight + (labelHeight + 5) * i);
+        RoverLabel.setLeft (0);
+        RoverLabel.setHeight (labelHeight);
+        RoverLabel.setWidth (RoversScroll.getWidth () - 20);
+        RoverLabel.setColor (Color.white);
+
+        RoversScroll.Components.Add (RoverLabel);
       }
     }
 

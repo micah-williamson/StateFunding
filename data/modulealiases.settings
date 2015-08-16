@@ -74,4 +74,26 @@
 			}
 		}
 	}
+	Item
+	{
+		name = Wheel
+		Modules
+		{
+			Item
+			{
+				name = ModuleWheel
+			}
+		}
+	}
+	Item
+	{
+		name = DockingPort
+		Modules
+		{
+			Item
+			{
+				name = ModuleDockingNode
+			}
+		}
+	}
 }
