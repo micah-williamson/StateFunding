@@ -344,6 +344,8 @@ namespace StateFunding {
 
         if (VesselHelper.HasCrew(ScienceLab)
           && ScienceLab.Landed
+          && ScienceLab.vesselType != VesselType.Station
+          && ScienceLab.vesselType != VesselType.Base
           && ScienceLab.landedAt != SpaceCenter.Instance.cb.GetName()
           && VesselHelper.HasEnergy(ScienceLab)
           && VesselHelper.GeneratesEnergy(ScienceLab)
@@ -383,6 +385,8 @@ namespace StateFunding {
         // Planetary science station
 
         if (MiningRig.Landed
+          && MiningRig.vesselType != VesselType.Station
+          && MiningRig.vesselType != VesselType.Base
           && MiningRig.landedAt != SpaceCenter.Instance.cb.GetName()
           && VesselHelper.HasEnergy(MiningRig)
           && VesselHelper.GeneratesEnergy(MiningRig)
@@ -407,7 +411,7 @@ namespace StateFunding {
       for (int i = 0; i < Satellites.Length; i++) {
         Vessel Satellite = Satellites [i];
 
-        if (!Satellite.Landed) {
+        if (!Satellite.Landed && Satellite.vesselType == VesselType.Probe) {
           if (Satellite.GetOrbit() != null && Satellite.GetOrbit().referenceBody.GetName() != "Sun") {
             if (!VesselHelper.HasCrew (Satellite)) {
               ReturnVessels.Add (Satellite);
