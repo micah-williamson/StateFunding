@@ -6,7 +6,10 @@ namespace StateFunding {
     public SpaceStationReport () {}
 
     [Persistent]
-    public string entity;
+    public string name = "";
+
+    [Persistent]
+    public string entity = "";
 
     [Persistent]
     public int fuel = 0;

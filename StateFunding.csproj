@@ -74,6 +74,7 @@
     <Compile Include="StateFunding\Views\StateFundingHubCurrentView.cs" />
     <Compile Include="StateFunding\Views\StateFundingHubReviewsView.cs" />
     <Compile Include="StateFunding\Views\StateFundingHubCoverageView.cs" />
+    <Compile Include="ViewComponents\ViewBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">

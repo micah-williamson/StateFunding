@@ -6,6 +6,9 @@ namespace StateFunding {
     public BaseReport () {}
 
     [Persistent]
+    public string name;
+
+    [Persistent]
     public string entity;
 
     [Persistent]

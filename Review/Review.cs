@@ -172,6 +172,7 @@ namespace StateFunding {
         Vessel SpcStation = SpcStations [i];
 
         SpaceStationReport SpcStationReport = new SpaceStationReport ();
+        SpcStationReport.name = SpcStation.vesselName;
         SpcStationReport.crew = VesselHelper.GetCrew (SpcStation).Length;
         SpcStationReport.crewCapacity = VesselHelper.GetCrewCapactiy (SpcStation);
         SpcStationReport.dockedVessels = VesselHelper.GetDockedVesselsCount (SpcStation);
@@ -198,8 +199,8 @@ namespace StateFunding {
 
       for (int i = 0; i < _Bases.Length; i++) {
         Vessel Base = _Bases [i];
-
         BaseReport _BaseReport = new BaseReport ();
+        _BaseReport.name = Base.vesselName;
         _BaseReport.crew = VesselHelper.GetCrew (Base).Length;
         _BaseReport.crewCapacity = VesselHelper.GetCrewCapactiy (Base);
         _BaseReport.dockedVessels = VesselHelper.GetDockedVesselsCount (Base);
