@@ -12,10 +12,10 @@ namespace StateFunding {
       Rev.touch ();
 
       string Description = "Below is a list of existing Space Stations. Vessels that are Space Stations should be labeled as " +
-        "such. Space Stations increase State Confidence as well as Public Opinion. Space Stations are scored by the following " +
-        "criteria: Total Fuel, Total Ore, Crew, Crew Capacity, Docking Port Count, Docked Vessels (aka station modules) and if it " +
-        "has a science lab. If the Station is landed on an astroid it will also get a bonus- higher bonus if you have a drill. Stations " +
-        "must be able to generate their own power.";
+        "such, be in orbit, and must be able to generate their own power. Space Stations increase State Confidence as well as Public Opinion." +
+        "Space Stations are scored by the following criteria: Total Fuel (SC), Total Ore (SC), Crew (PO), Crew Capacity (SC), Docking " +
+        "Port Count (SC), Docked Vessels (PO) and if it has a science lab (SC/PO). If the Station is landed on an astroid it will also " +
+        "get a bonus (PO). If you are on an astroid you will also get a bonus for having a drill (SC/PO).";
 
       ViewLabel DescriptionLabel = new ViewLabel (Description);
       DescriptionLabel.setRelativeTo (Window);

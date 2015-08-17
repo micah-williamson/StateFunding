@@ -12,11 +12,10 @@ namespace StateFunding {
       Rev.touch ();
 
       string Description = "Below is a list of existing Bases. Vessels that are Bases should be labeled as " +
-        "such. Bases increase State Confidence as well as Public Opinion. Bases are scored by the following " +
-        "criteria: Total Fuel, Total Ore, Crew, Crew Capacity, Docking Port Count, Docked Vessels (aka base modules), if it " +
-        "has a science lab, and if it has a drill. Bases must be able to generate their own power. Bases on the home planet " +
-        "(Kerbin in most cases) will not count.";
-
+                           "such, be landed on a body other than the home planet, and be able to generate power. Bases increase State Confidence " +
+                           "as well as Public Opinion. Bases are scored by the following criteria: Total Fuel (SC), Total Ore (SC), Crew (PO), Crew Capacity " +
+                           "(SC), Docking Port Count (SC), Docked Vessels (PO), if it has a science lab (SC/PO), and if it has a drill (SC/PO).";
+      
       ViewLabel DescriptionLabel = new ViewLabel (Description);
       DescriptionLabel.setRelativeTo (Window);
       DescriptionLabel.setLeft (140);

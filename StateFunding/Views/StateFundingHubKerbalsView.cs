@@ -15,8 +15,9 @@ namespace StateFunding {
         "So it goes without saying, having Kerbals actively on missions increases Public Opinion. " +
         "The more Kerbals you have in flight the more Public Opinion you will garner, but be careful, " +
         "a stranded Kerbal is as bad as a dead Kerbal and will hurt public opinion until they are " +
-        "rescued. A qualified \"Stranded Kerbal\" is one that is in a vessel without fuel, a science lab, " +
-        "or a mining rig. They are floating without reason to be there.";
+        "rescued. A qualified \"Stranded Kerbal\" is one that is in a vessel without fuel/energy, a science lab, " +
+        "or a mining rig. They are floating without reason to be there. A kerbal will not be considered stranded unless it's " +
+        "been on the current mission for at least 2 years.";
 
       ViewLabel DescriptionLabel = new ViewLabel (Description);
       DescriptionLabel.setRelativeTo (Window);
