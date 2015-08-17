@@ -68,6 +68,9 @@ namespace StateFunding {
     public int miningRigs = 0;
 
     [Persistent]
+    public int rovers = 0;
+
+    [Persistent]
     public float satelliteCoverage = 0;
 
     [Persistent]
@@ -81,6 +84,12 @@ namespace StateFunding {
 
     [Persistent]
     public int strandedKerbals = 0;
+
+    [Persistent]
+    public SpaceStationReport[] SpaceStations;
+
+    [Persistent]
+    public BaseReport[] Bases;
 
     [Persistent]
     public int year = 0;
@@ -100,12 +109,14 @@ namespace StateFunding {
     }
 
     private void UpdatePOSC() {
+      Debug.Log ("Updating POSC");
       Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
       po = GameInstance.po;
       sc = GameInstance.sc;
     }
 
     private void UpdateCoverage() {
+      Debug.Log ("Updating Coverage");
 
       for (int i = 0; i < Coverages.Length; i++) {
         Coverages [i].satCount = 0;
@@ -131,17 +142,131 @@ namespace StateFunding {
     }
 
     private void UpdateActiveKerbals() {
+      Debug.Log ("Updating Active Kerbals");
       activeKerbals = KerbalHelper.GetActiveKerbals ().Length;
       strandedKerbals = KerbalHelper.GetStrandedKerbals ().Length;
     }
 
     private void UpdateMiningRigs() {
+      Debug.Log ("Updating Mining Rigs");
       miningRigs = VesselHelper.GetMiningRigs ().Length;
     }
 
     private void UpdateScienceStations() {
+      Debug.Log ("Updating Science Stations");
       orbitalScienceStations = VesselHelper.GetOrbitingScienceStations ().Length;
       planetaryScienceStations = VesselHelper.GetLandedScienceStations ().Length;
+    }
+
+    private void UpdateRovers() {
+      Debug.Log ("Updating Rovers");
+      rovers = VesselHelper.GetRovers ().Length;
+    }
+
+    private void UpdateSpaceStations() {
+      Debug.Log ("Updating Space Stations");
+
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      Vessel[] SpcStations = VesselHelper.GetSpaceStations ();
+      SpaceStations = new SpaceStationReport[SpcStations.Length];
+
+      for (int i = 0; i < SpcStations.Length; i++) {
+        Vessel SpcStation = SpcStations [i];
+
+        SpaceStationReport SpcStationReport = new SpaceStationReport ();
+        SpcStationReport.name = SpcStation.vesselName;
+        SpcStationReport.crew = VesselHelper.GetCrew (SpcStation).Length;
+        SpcStationReport.crewCapacity = VesselHelper.GetCrewCapactiy (SpcStation);
+        SpcStationReport.dockedVessels = VesselHelper.GetDockedVesselsCount (SpcStation);
+        SpcStationReport.dockingPorts = VesselHelper.GetDockingPorts (SpcStation).Length;
+        SpcStationReport.drill = VesselHelper.VesselHasModuleAlias (SpcStation, "Drill");
+        SpcStationReport.scienceLab = VesselHelper.VesselHasModuleAlias (SpcStation, "ScienceLab");
+        SpcStationReport.fuel = VesselHelper.GetResourceCount (SpcStation, "LiquidFuel");
+        SpcStationReport.ore = VesselHelper.GetResourceCount (SpcStation, "Ore");
+        SpcStationReport.onAstroid = VesselHelper.OnAstroid (SpcStation);
+
+        if (SpcStation.Landed) {
+          SpcStationReport.entity = SpcStation.landedAt;
+        } else {
+          SpcStationReport.entity = SpcStation.GetOrbit ().referenceBody.GetName ();
+        }
+
+        SpcStationReport.po = 0;
+        SpcStationReport.sc = 0;
+
+        SpcStationReport.po += (int)(5 * SpcStationReport.crew * GameInstance.Gov.poModifier);
+        SpcStationReport.po += (int)(5 * SpcStationReport.dockedVessels * GameInstance.Gov.poModifier);
+
+        if (SpcStationReport.onAstroid) {
+          SpcStationReport.po += (int)(30 * GameInstance.Gov.poModifier);
+
+          if (SpcStationReport.drill) {
+            SpcStationReport.po += (int)(10 * GameInstance.Gov.poModifier);
+            SpcStationReport.sc += (int)(10 * GameInstance.Gov.poModifier);
+          }
+        }
+
+        SpcStationReport.sc += (int)(2 * SpcStationReport.crewCapacity * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(SpcStationReport.fuel / 200f * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(SpcStationReport.ore / 200f * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(2 * SpcStationReport.dockingPorts * GameInstance.Gov.scModifier);
+        SpcStationReport.sc += (int)(2 * SpcStationReport.crewCapacity * GameInstance.Gov.scModifier);
+
+        if (SpcStationReport.scienceLab) {
+          SpcStationReport.po += (int)(10 * GameInstance.Gov.poModifier);
+          SpcStationReport.sc += (int)(10 * GameInstance.Gov.poModifier);
+        }
+
+        SpaceStations [i] = SpcStationReport;
+      }
+    }
+
+    private void UpdateBases() {
+      Debug.Log ("Updating Bases");
+
+      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      Vessel[] _Bases = VesselHelper.GetBases ();
+      Bases = new BaseReport[_Bases.Length];
+
+      for (int i = 0; i < _Bases.Length; i++) {
+        Vessel Base = _Bases [i];
+        BaseReport _BaseReport = new BaseReport ();
+        _BaseReport.name = Base.vesselName;
+        _BaseReport.crew = VesselHelper.GetCrew (Base).Length;
+        _BaseReport.crewCapacity = VesselHelper.GetCrewCapactiy (Base);
+        _BaseReport.dockedVessels = VesselHelper.GetDockedVesselsCount (Base);
+        _BaseReport.dockingPorts = VesselHelper.GetDockingPorts (Base).Length;
+        _BaseReport.drill = VesselHelper.VesselHasModuleAlias (Base, "Drill");
+        _BaseReport.scienceLab = VesselHelper.VesselHasModuleAlias (Base, "ScienceLab");
+        _BaseReport.fuel = VesselHelper.GetResourceCount (Base, "LiquidFuel");
+        _BaseReport.ore = VesselHelper.GetResourceCount (Base, "Ore");
+        _BaseReport.entity = Base.landedAt;
+
+        _BaseReport.po = 0;
+        _BaseReport.sc = 0;
+
+        _BaseReport.po += (int)(5 * _BaseReport.crew * GameInstance.Gov.poModifier);
+        _BaseReport.po += (int)(5 * _BaseReport.dockedVessels * GameInstance.Gov.poModifier);
+        _BaseReport.po += (int)((BodyHelper.GetBody (Base.landedAt).Radius / 60000f) * (_BaseReport.dockedVessels + 1) * GameInstance.Gov.poModifier);
+
+        _BaseReport.sc += (int)(2 * _BaseReport.crewCapacity * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(_BaseReport.fuel / 200f * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(_BaseReport.ore / 200f * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(2 * _BaseReport.dockingPorts * GameInstance.Gov.scModifier);
+        _BaseReport.sc += (int)(2 * _BaseReport.crewCapacity * GameInstance.Gov.scModifier);
+
+        if (_BaseReport.scienceLab) {
+          _BaseReport.po += (int)(10 * GameInstance.Gov.poModifier);
+          _BaseReport.sc += (int)(10 * GameInstance.Gov.poModifier);
+        }
+
+        if (_BaseReport.drill) {
+          _BaseReport.po += (int)(10 * GameInstance.Gov.poModifier);
+          _BaseReport.sc += (int)(10 * GameInstance.Gov.poModifier);
+        }
+
+        Bases [i] = _BaseReport;
+      }
     }
 
     public void touch() {
@@ -151,6 +276,9 @@ namespace StateFunding {
         UpdateActiveKerbals ();
         UpdateMiningRigs ();
         UpdateScienceStations ();
+        UpdateSpaceStations ();
+        UpdateBases ();
+        UpdateRovers ();
         UpdateFinalPO ();
         UpdateFinalSC ();
         UpdateFunds ();
@@ -161,10 +289,12 @@ namespace StateFunding {
     }
 
     public void UpdateYear() {
+      Debug.Log ("Updating Year");
       year = TimeHelper.Quarters(Planetarium.GetUniversalTime());
     }
 
     public void UpdateFinalPO() {
+      Debug.Log ("Updating Final PO");
       int tmpPO = po;
 
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
@@ -176,11 +306,21 @@ namespace StateFunding {
 
       // Positives
       tmpPO += (int)(5 * activeKerbals * Gov.poModifier);
+      tmpPO += (int)(5 * rovers * Gov.poModifier);
+
+      for (int i = 0; i < SpaceStations.Length; i++) {
+        tmpPO += SpaceStations [i].po;
+      }
+
+      for (int i = 0; i < Bases.Length; i++) {
+        tmpPO += Bases [i].po;
+      }
 
       finalPO = tmpPO;
     }
 
     public void UpdateFinalSC() {
+      Debug.Log ("Updating Final SC");
       int tmpSC = sc;
 
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
@@ -197,10 +337,19 @@ namespace StateFunding {
       tmpSC += (int)(5 * planetaryScienceStations * Gov.scModifier);
       tmpSC += (int)(5 * miningRigs * Gov.scModifier);
 
+      for (int i = 0; i < SpaceStations.Length; i++) {
+        tmpSC += SpaceStations [i].sc;
+      }
+
+      for (int i = 0; i < Bases.Length; i++) {
+        tmpSC += Bases [i].sc;
+      }
+
       finalSC = tmpSC;
     }
 
     private void UpdateFunds() {
+      Debug.Log ("Updating Funds");
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
       funds = (int)(((float)(finalPO + finalSC) / 10000 / 4) * (float)Inst.Gov.gdp * (float)Inst.Gov.budget);
     }
@@ -208,22 +357,62 @@ namespace StateFunding {
     public string GetText() {
       Instance Inst = StateFundingGlobal.fetch.GameInstance;
 
-      return "# Review for Quarter: " + year + "\n\n" +
-             "Funding: " + funds + "\n\n" +
-             "Public Opinion: " + po + "\n" +
-             "State Confidence: " + sc + "\n" +
-             "Public Opinion After Modifiers & Decay: " + finalPO + "\n" +
-             "State Confidence After Modifiers & Decay: " + finalSC + "\n\n" +
-             "Active Kerbals: " + activeKerbals + "\n" +
-             "Satellite Coverage: " + Math.Round(satelliteCoverage*100) + "%\n" +
-             "Active Mining Rigs: " + miningRigs + "\n" +
-             "Obital Science Stations: " + orbitalScienceStations + "\n" +
-             "Planetary Science Stations: " + planetaryScienceStations + "\n" +
-             "Govt. Contracts Completed: " + contractsCompleted + "\n" +
-             "Govt. Contracts Failed: " + contractsFailed + "\n" +
-             "Kerbal \"Accidents\": " + kerbalDeaths + "\n" +
-             "Stranded Kerbals: " + strandedKerbals + "\n" +
-             "Vessels Destroyed: " + vesselsDestroyed + "\n";
+      string returnText = "# Review for Quarter: " + year + "\n\n" +
+                          "Funding: " + funds + "\n\n" +
+                          "Public Opinion: " + po + "\n" +
+                          "State Confidence: " + sc + "\n" +
+                          "Public Opinion After Modifiers & Decay: " + finalPO + "\n" +
+                          "State Confidence After Modifiers & Decay: " + finalSC + "\n\n" +
+                          "Active Kerbals: " + activeKerbals + "\n" +
+                          "Satellite Coverage: " + Math.Round(satelliteCoverage*100) + "%\n" +
+                          "Active Mining Rigs: " + miningRigs + "\n" +
+                          "Rovers: " + rovers + "\n" +
+                          "Obital Science Stations: " + orbitalScienceStations + "\n" +
+                          "Planetary Science Stations: " + planetaryScienceStations + "\n" +
+                          "Govt. Contracts Completed: " + contractsCompleted + "\n" +
+                          "Govt. Contracts Failed: " + contractsFailed + "\n" +
+                          "Kerbal \"Accidents\": " + kerbalDeaths + "\n" +
+                          "Stranded Kerbals: " + strandedKerbals + "\n" +
+                          "Vessels Destroyed: " + vesselsDestroyed;
+
+      if (SpaceStations.Length > 0) {
+        returnText += "\n\n== Space Stations ==\n\n";
+        for (int i = 0; i < SpaceStations.Length; i++) {
+          SpaceStationReport StationReport = SpaceStations [i];
+          returnText += "[" + StationReport.name + " Orbiting " + StationReport.entity + "]\n";
+          returnText += "Fuel: " + StationReport.fuel + "\n";
+          returnText += "Ore: " + StationReport.ore + "\n";
+          returnText += "Crew: " + StationReport.crew + "\n";
+          returnText += "Crew Capacity: " + StationReport.crewCapacity + "\n";
+          returnText += "Docked Vessels: " + StationReport.dockedVessels + "\n";
+          returnText += "Docking Ports: " + StationReport.dockingPorts + "\n";
+          returnText += "Has Drill: " + StationReport.drill + "\n";
+          returnText += "Science Lab: " + StationReport.scienceLab + "\n";
+          returnText += "On Astroid: " + StationReport.onAstroid + "\n";
+          returnText += "PO: " + StationReport.po + "\n";
+          returnText += "SC: " + StationReport.sc + "\n\n";
+        }
+      }
+
+      if (Bases.Length > 0) {
+        returnText += "\n\n== Bases ==\n\n";
+        for (int i = 0; i < Bases.Length; i++) {
+          BaseReport Base = Bases [i];
+          returnText += "[" + Base.name + " Landed At " + Base.entity + "]\n";
+          returnText += "Fuel: " + Base.fuel + "\n";
+          returnText += "Ore: " + Base.ore + "\n";
+          returnText += "Crew: " + Base.crew + "\n";
+          returnText += "Crew Capacity: " + Base.crewCapacity + "\n";
+          returnText += "Docked Vessels: " + Base.dockedVessels + "\n";
+          returnText += "Docking Ports: " + Base.dockingPorts + "\n";
+          returnText += "Has Drill: " + Base.drill + "\n";
+          returnText += "Science Lab: " + Base.scienceLab + "\n";
+          returnText += "PO: " + Base.po + "\n";
+          returnText += "SC: " + Base.sc + "\n\n";
+        }
+      }
+
+      return returnText;
           
     }
 
