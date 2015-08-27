@@ -37,7 +37,15 @@
 			}
 			Item
 			{
+				name = ModuleLimitedDataTransmitter
+			}
+			Item
+			{
 				name = ModuleRTAntenna
+			}
+			Item
+			{
+				name = AntennaRange
 			}
 		}
 	}
@@ -49,6 +57,10 @@
 			Item
 			{
 				name = ModuleDeployableSolarPanel
+			},
+			Item
+			{
+				name = ModuleGenerator
 			}
 		}
 	}
