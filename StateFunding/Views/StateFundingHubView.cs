@@ -21,7 +21,10 @@ namespace StateFunding {
       SideMenu = new ArrayList ();
 
       Window = new ViewWindow ("");
-      Window.setMargins (300, 100);
+      Window.setWidth (800);
+      Window.setHeight (Screen.height - 200);
+      Window.setLeft ((Screen.width-800)/2);
+      Window.setTop (100);
 
       this.addComponent (Window);
 
