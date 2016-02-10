@@ -246,14 +246,14 @@ namespace StateFunding {
         _BaseReport.scienceLab = VesselHelper.VesselHasModuleAlias (Base, "ScienceLab");
         _BaseReport.fuel = VesselHelper.GetResourceCount (Base, "LiquidFuel");
         _BaseReport.ore = VesselHelper.GetResourceCount (Base, "Ore");
-        _BaseReport.entity = Base.landedAt;
+        _BaseReport.entity = Base.mainBody.name;
 
         _BaseReport.po = 0;
         _BaseReport.sc = 0;
 
         _BaseReport.po += (int)(5 * _BaseReport.crew * GameInstance.Gov.poModifier);
         _BaseReport.po += (int)(5 * _BaseReport.dockedVessels * GameInstance.Gov.poModifier);
-        _BaseReport.po += (int)((BodyHelper.GetBody (Base.landedAt).Radius / refRadius) * (_BaseReport.dockedVessels + 1) * GameInstance.Gov.poModifier);
+        _BaseReport.po += (int)((Base.mainBody.Radius / refRadius) * (_BaseReport.dockedVessels + 1) * GameInstance.Gov.poModifier);
 
         _BaseReport.sc += (int)(2 * _BaseReport.crewCapacity * GameInstance.Gov.scModifier);
         _BaseReport.sc += (int)(_BaseReport.fuel / 200f * GameInstance.Gov.scModifier);
