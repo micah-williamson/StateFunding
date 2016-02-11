@@ -10,6 +10,10 @@ namespace StateFunding {
       CelestialBody[] Bodies = FlightGlobals.Bodies.ToArray ();
       Coverages = new CoverageReport [Bodies.Length-1];
 
+      CelestialBody home = Planetarium.fetch.Home;
+      if (home == null) home = FlightGlobals.Bodies.Find(body => body.isHomeWorld == true);
+      if (home != null) refRadius = home.Radius / 10;
+
       int k = 0;
       for (int i = 0; i < Bodies.Length; i++) {
         CelestialBody Body = Bodies [i];
@@ -21,13 +25,15 @@ namespace StateFunding {
 
           // Benchmark: Kerbin
           // 10 sats till full coverage on Kerbin
-          Report.satCountForFullCoverage = (int)Math.Ceiling (Body.Radius / 60000);
+          Report.satCountForFullCoverage = (int)Math.Ceiling (Body.Radius / refRadius);
 
           Coverages [k] = Report;
           k++;
         }
       }
     }
+    
+    public double refRadius = 60000.0;
 
     [Persistent]
     public int activeKerbals = 0;
@@ -240,14 +246,14 @@ namespace StateFunding {
         _BaseReport.scienceLab = VesselHelper.VesselHasModuleAlias (Base, "ScienceLab");
         _BaseReport.fuel = VesselHelper.GetResourceCount (Base, "LiquidFuel");
         _BaseReport.ore = VesselHelper.GetResourceCount (Base, "Ore");
-        _BaseReport.entity = Base.landedAt;
+        _BaseReport.entity = Base.mainBody.name;
 
         _BaseReport.po = 0;
         _BaseReport.sc = 0;
 
         _BaseReport.po += (int)(5 * _BaseReport.crew * GameInstance.Gov.poModifier);
         _BaseReport.po += (int)(5 * _BaseReport.dockedVessels * GameInstance.Gov.poModifier);
-        _BaseReport.po += (int)((BodyHelper.GetBody (Base.landedAt).Radius / 60000f) * (_BaseReport.dockedVessels + 1) * GameInstance.Gov.poModifier);
+        _BaseReport.po += (int)((Base.mainBody.Radius / refRadius) * (_BaseReport.dockedVessels + 1) * GameInstance.Gov.poModifier);
 
         _BaseReport.sc += (int)(2 * _BaseReport.crewCapacity * GameInstance.Gov.scModifier);
         _BaseReport.sc += (int)(_BaseReport.fuel / 200f * GameInstance.Gov.scModifier);
