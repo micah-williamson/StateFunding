@@ -12,7 +12,7 @@
 		startingSC = 30
 		budget = 0.2
 		gdp = 80000000
-		description = For the people, by the people. At least that's what they say. With the USK the peoples opinions have a greater impact on your funding. Their hearts pour out for Kerbals, not robots and machines. Because of this, the more Kerbals on missions the more interested the people of USK will be in funding the your space program. But there's an equal- well not really equal- reaction to every action. While having Kerbals on missions is crucial to funding, Kerbal death will be devastating in performance reviews. Every life is special and there isn't much room for failure
+		description = For the people, by the people. At least that's what they say. With the USK the peoples opinions have a greater impact on your funding. Their hearts pour out for Kerbals, not robots and machines. Because of this, the more Kerbals on missions the more interested the people of USK will be in funding your space program. But there's an equal- well not really equal- reaction to every action. While having Kerbals on missions is crucial to funding, Kerbal death will be devastating in performance reviews. Every life is special and there isn't much room for failure
 	}
 	Item
 	{
