@@ -13,9 +13,20 @@ namespace StateFunding {
       
     }
 
+
+
+    private int curTicks;
+    private const int INTERVAL_TICKS = 50;
+
+
     public void Update () {
-      if (StateFundingGlobal.fetch != null) {
-        StateFundingGlobal.fetch.tick ();
+      // Update once every 50 fixedupdates
+      curTicks++;
+      if (curTicks > INTERVAL_TICKS) {
+        curTicks = 0;
+        if (StateFundingGlobal.fetch != null) {
+          StateFundingGlobal.fetch.tick ();
+        }
       }
     }
 

@@ -5,16 +5,16 @@ namespace StateFunding {
   public class CoverageReport {
     public CoverageReport () {}
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public string entity;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public int satCount = 0;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public int satCountForFullCoverage = 0;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public float coverage = 0;
 
     public void Update() {

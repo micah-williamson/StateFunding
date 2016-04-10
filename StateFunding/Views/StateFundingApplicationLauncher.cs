@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.IO;
+using KSP.UI.Screens;
 
 namespace StateFunding {
   public class StateFundingApplicationLauncher: MonoBehaviour {

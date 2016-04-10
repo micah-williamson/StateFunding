@@ -4,19 +4,19 @@ namespace StateFunding {
   public class Instance  {
     public Government Gov;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public Review ActiveReview;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public string govName;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public int po;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     public int sc;
 
-    [Persistent]
+    [KSPField (isPersistant=true)]
     Review[] Reviews = new Review[0];
 
     public Instance () {
