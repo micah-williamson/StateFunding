@@ -5,43 +5,43 @@ namespace StateFunding {
   public class SpaceStationReport {
     public SpaceStationReport () {}
 
-    [KSPField (isPersistant=true)]
+    [Persistent]
     public string name = "";
 
-    [KSPField (isPersistant=true)]
+    [Persistent]
     public string entity = "";
 
-    [KSPField (isPersistant=true)]
+    [Persistent]
     public int fuel = 0;
 
-    [KSPField (isPersistant=true)]
+    [Persistent]
     public int ore = 0;
 
-    [KSPField (isPersistant=true)]
+    [Persistent]
     public int crew = 0;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public int crewCapacity = 0;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public int dockedVessels = 0;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public int dockingPorts = 0;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public bool drill = false;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public bool scienceLab = false;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public bool onAstroid = false;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public int po = 0;
 
-      [KSPField (isPersistant=true)]
+      [Persistent]
     public int sc = 0;
   }
 }
