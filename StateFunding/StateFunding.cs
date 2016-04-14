@@ -10,7 +10,12 @@ namespace StateFunding {
     public Government USSK;
     public InstanceConfig InstanceConf;
     public ReviewManager ReviewMgr;
-    public Instance GameInstance;
+    public InstanceData GameInstance {
+      get {
+        if (StateFundingScenario.Instance != null)
+          return StateFundingScenario.Instance.data;
+      }
+    }
 
     private StateFundingApplicationLauncher AppLauncher;
 
@@ -77,6 +82,7 @@ namespace StateFunding {
     }
 
     public void loadSave () {
+      /*
       if (GameInstance == null) {
         if ((GameInstance = InstanceConf.loadInstance ()) == null) {
           InstanceConf.createInstance ((Instance Inst) => {
@@ -88,10 +94,10 @@ namespace StateFunding {
 
         Debug.Log ("StateFunding Save Loaded");
       }
+      */
     }
 
     public void tick() {
-      
       if(GameInstance != null) {
         if (GameInstance.getReviews ().Length > 0) {
           int year = (int)(TimeHelper.Quarters(Planetarium.GetUniversalTime ()));
