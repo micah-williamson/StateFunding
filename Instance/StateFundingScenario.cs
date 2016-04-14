@@ -26,12 +26,12 @@ namespace StateFunding
     
     
     public StateFundingScenario () {
+      	_instance = this;
     }
     
 
 	public override void OnAwake ()
 	{
-      	_instance = this;
       	if (data == null)
       	data = new InstanceData();
       	if (ReviewMgr == null)
