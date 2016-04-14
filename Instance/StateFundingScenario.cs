@@ -42,6 +42,8 @@ namespace StateFunding
     public override void OnDestroy ()
 	{
       _instance = null;
+      data = null;
+      ReviewMgr = null;
 	} 
     
     
