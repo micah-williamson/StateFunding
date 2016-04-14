@@ -9,7 +9,12 @@ namespace StateFunding {
     public Government USK;
     public Government USSK;
     public InstanceConfig InstanceConf;
-    public ReviewManager ReviewMgr;
+    public ReviewManager ReviewMgr {
+      get {
+        if (StateFundingScenario.Instance != null)
+          return StateFundingScenario.Instance.ReviewMgr;        
+      }
+    }
     public InstanceData GameInstance {
       get {
         if (StateFundingScenario.Instance != null)
@@ -115,20 +120,20 @@ namespace StateFunding {
     public void OnCrewKilled(EventReport Evt) {
       Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
-      InstanceConf.saveInstance (GameInstance);
+      //InstanceConf.saveInstance (GameInstance);
     }
 
     public void OnCrewLeftForDead(ProtoCrewMember Crew, int id) {
       Debug.LogWarning ("CREW KILLED");
       GameInstance.ActiveReview.kerbalDeaths++;
-      InstanceConf.saveInstance (GameInstance);
+      //InstanceConf.saveInstance (GameInstance);
     }
 
     public void OnCrash(EventReport Evt) {
       if (VesselHelper.PartHasModuleAlias (Evt.origin, "Command") || VesselHelper.PartHasModuleAlias (Evt.origin, "AutonomousCommand")) {
         Debug.LogWarning ("VESSEL DESTROYED");
         GameInstance.ActiveReview.vesselsDestroyed++;
-        InstanceConf.saveInstance (GameInstance);
+        //InstanceConf.saveInstance (GameInstance);
       }
     }
 
@@ -136,7 +141,7 @@ namespace StateFunding {
       if (VesselHelper.PartHasModuleAlias(Evt.origin, "Command") || VesselHelper.PartHasModuleAlias(Evt.origin, "AutonomousCommand")) {
         Debug.LogWarning ("VESSEL DESTROYED");
         GameInstance.ActiveReview.vesselsDestroyed++;
-        InstanceConf.saveInstance (GameInstance);
+        //InstanceConf.saveInstance (GameInstance);
       }
     }
 
