@@ -2,6 +2,14 @@
 
 namespace StateFunding
 {
+  
+	[KSPScenario(ScenarioCreationOptions.AddToAllGames, new GameScenes[] {
+			GameScenes.SPACECENTER,
+			GameScenes.EDITOR,
+			GameScenes.FLIGHT,
+			GameScenes.TRACKSTATION,
+		})
+	]  
   public class StateFundingScenario : ScenarioModule
   {
     private static StateFundingScenario _instance;
@@ -11,21 +19,46 @@ namespace StateFunding
       }
     }
     
-    private static InstanceData data;
-    private static bool isInit;
+    private InstanceData data;
+    private bool isInit;
+    private const string CONFIG_NODENAME = "STATEFUNDINGSCENARIO";
+    
     
     public StateFundingScenario () {
-      if (_instance != null)
-        return;
-        
+    }
+    
+
+		public override void OnAwake ()
+		{
       _instance = this;
       data = new InstanceData();
-    }
+		}    
+    
+    
+    public override void OnDestroy ()
+		{
+      _instance = null;
+		} 
     
     
     //load scenario
     public override void OnLoad (ConfigNode node) {
-      
+      try {
+        if (node.hasNode(CONFIG_NODENAME)) {
+          //load
+          ConfigNode loadNode = node.getNode(CONFIG_NODENAME);
+          ConfigNode.LoadObjectFromConfig(data, loadNode);
+          isInit = true;
+        }
+        else {
+          //default init
+          //...
+          isInit = true;
+        }
+      }
+      catch {
+        
+      }
     }
     
     
@@ -33,7 +66,9 @@ namespace StateFunding
     public override void OnSave (ConfigNode node) {
       if (!isInit)
         return;
-      
+     
+      ConfigNode saveNode = ConfigNode.CreateConfigFromObject(data);
+      node.AddNode(saveNode, CONFIG_NODENAME);
     }
     
     
