@@ -3,13 +3,13 @@
 namespace StateFunding
 {
   
-	[KSPScenario(ScenarioCreationOptions.AddToAllGames, new GameScenes[] {
-			GameScenes.SPACECENTER,
-			GameScenes.EDITOR,
-			GameScenes.FLIGHT,
-			GameScenes.TRACKSTATION,
-		})
-	]  
+[KSPScenario(ScenarioCreationOptions.AddToAllGames, new GameScenes[] {
+		GameScenes.SPACECENTER,
+		GameScenes.EDITOR,
+		GameScenes.FLIGHT,
+		GameScenes.TRACKSTATION,
+	})
+]  
   public class StateFundingScenario : ScenarioModule
   {
     private static StateFundingScenario _instance;
@@ -19,6 +19,7 @@ namespace StateFunding
       }
     }
     
+    public ReviewManager ReviewMgr
     private InstanceData data;
     private bool isInit;
     private const string CONFIG_NODENAME = "STATEFUNDINGSCENARIO";
@@ -28,17 +29,20 @@ namespace StateFunding
     }
     
 
-		public override void OnAwake ()
-		{
-      _instance = this;
-      data = new InstanceData();
-		}    
+	public override void OnAwake ()
+	{
+      	_instance = this;
+      	if (data == null)
+      	data = new InstanceData();
+      	if (ReviewMgr == null)
+      	ReviewMgr = new ReviewManager();	
+	}    
     
     
     public override void OnDestroy ()
-		{
+	{
       _instance = null;
-		} 
+	} 
     
     
     //load scenario
