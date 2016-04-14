@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 namespace StateFunding {
-  [KSPAddon (KSPAddon.Startup.SpaceCentre, true)]
+  [KSPAddon (KSPAddon.Startup.SpaceCentre, false)]
   public class OnSpaceCentre : MonoBehaviour {
     public void Awake () {
       
@@ -19,7 +19,7 @@ namespace StateFunding {
     private const int INTERVAL_TICKS = 50;
 
     public void Update () {
-      // Update once every 50 fixedupdates
+      // Update once every 50 updates
       curTicks++;
       if (curTicks > INTERVAL_TICKS) {
         curTicks = 0;

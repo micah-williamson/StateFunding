@@ -7,7 +7,7 @@ namespace StateFunding {
   public static class StateFundingHubCoverageView {
     public static void draw (View Vw, ViewWindow Window) {
       Window.title = "Satellite Coverage";
-      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      InstanceData GameInstance = StateFundingGlobal.fetch.GameInstance;
       Review Rev = GameInstance.ActiveReview;
       Rev.touch ();
 

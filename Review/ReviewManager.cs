@@ -6,7 +6,7 @@ namespace StateFunding {
   public class ReviewManager: MonoBehaviour {
 
     public void CompleteReview () {
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      InstanceData Inst = StateFundingGlobal.fetch.GameInstance;
 
       Review Rev = Inst.ActiveReview;
       Rev.touch ();
@@ -28,18 +28,14 @@ namespace StateFunding {
       Funding.Instance.AddFunds (Rev.funds, TransactionReasons.None);
 
       // Notify player that a review is available
-      ReviewToastView Toast = new ReviewToastView (Rev);
-
-      // Save the instance and game
-      StateFundingGlobal.fetch.InstanceConf.saveInstance (Inst);
-      GamePersistence.SaveGame ("persistent", HighLogic.SaveFolder, SaveMode.OVERWRITE);
+      ReviewToastView Toast = new ReviewToastView (Rev);     
 
       Debug.Log ("Generated Review");
     }
 
     public void ApplyDecay() {
       Debug.Log ("Applying Decay");
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      InstanceData Inst = StateFundingGlobal.fetch.GameInstance;
       if (Inst.po > 0) {
         int newPO = Inst.po - (int)Math.Ceiling (Inst.po * 0.2);
         newPO = Math.Max (0, newPO);
@@ -71,7 +67,7 @@ namespace StateFunding {
     }
 
     public Review LastReview() {
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      InstanceData Inst = StateFundingGlobal.fetch.GameInstance;
       Review[] Reviews = Inst.getReviews ();
       return Reviews [Reviews.Length - 1];
     }

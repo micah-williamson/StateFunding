@@ -116,7 +116,7 @@ namespace StateFunding {
 
     private void UpdatePOSC() {
       Debug.Log ("Updating POSC");
-      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      InstanceData GameInstance = StateFundingGlobal.fetch.GameInstance;
       po = GameInstance.po;
       sc = GameInstance.sc;
     }
@@ -172,7 +172,7 @@ namespace StateFunding {
     private void UpdateSpaceStations() {
       Debug.Log ("Updating Space Stations");
 
-      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      InstanceData GameInstance = StateFundingGlobal.fetch.GameInstance;
       Vessel[] SpcStations = VesselHelper.GetSpaceStations ();
       SpaceStations = new SpaceStationReport[SpcStations.Length];
 
@@ -230,7 +230,7 @@ namespace StateFunding {
     private void UpdateBases() {
       Debug.Log ("Updating Bases");
 
-      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      InstanceData GameInstance = StateFundingGlobal.fetch.GameInstance;
       Vessel[] _Bases = VesselHelper.GetBases ();
       Bases = new BaseReport[_Bases.Length];
 
@@ -303,7 +303,7 @@ namespace StateFunding {
       Debug.Log ("Updating Final PO");
       int tmpPO = po;
 
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      InstanceData Inst = StateFundingGlobal.fetch.GameInstance;
       Government Gov = Inst.Gov;
 
       // Negatives
@@ -329,7 +329,7 @@ namespace StateFunding {
       Debug.Log ("Updating Final SC");
       int tmpSC = sc;
 
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      InstanceData Inst = StateFundingGlobal.fetch.GameInstance;
       Government Gov = Inst.Gov;
 
       // Negatives
@@ -356,12 +356,12 @@ namespace StateFunding {
 
     private void UpdateFunds() {
       Debug.Log ("Updating Funds");
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      InstanceData Inst = StateFundingGlobal.fetch.GameInstance;
       funds = (int)(((float)(finalPO + finalSC) / 10000 / 4) * (float)Inst.Gov.gdp * (float)Inst.Gov.budget);
     }
 
     public string GetText() {
-      Instance Inst = StateFundingGlobal.fetch.GameInstance;
+      //InstanceData Inst = StateFundingGlobal.fetch.GameInstance;
 
       string returnText = "# Review for Quarter: " + year + "\n\n" +
                           "Funding: " + funds + "\n\n" +

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace StateFunding
 {
@@ -13,14 +16,15 @@ namespace StateFunding
   public class StateFundingScenario : ScenarioModule
   {
     private static StateFundingScenario _instance;
-    public StateFundingScenario Instance {
+    public static StateFundingScenario Instance {
       get {
         return _instance;
       }
     }
     
-    public ReviewManager ReviewMgr
+    public ReviewManager ReviewMgr;
     private InstanceData data;
+    public InstanceData Data { get { return data; } }
     private bool isInit;
     private const string CONFIG_NODENAME = "STATEFUNDINGSCENARIO";
     
@@ -30,37 +34,52 @@ namespace StateFunding
     }
     
 
-	public override void OnAwake ()
-	{
-      	if (data == null)
-      	data = new InstanceData();
-      	if (ReviewMgr == null)
-      	ReviewMgr = new ReviewManager();	
-	}    
+  	public override void OnAwake ()
+  	{
+    	if (data == null)
+    	  data = new InstanceData();
+        
+    	if (ReviewMgr == null)
+    	ReviewMgr = new ReviewManager();	
+  	}    
     
     
-    public override void OnDestroy ()
-	{
+    public void OnDestroy ()
+  	{
       _instance = null;
       data = null;
       ReviewMgr = null;
-	} 
+  	} 
     
     
     //load scenario
     public override void OnLoad (ConfigNode node) {
       try {
-        if (node.hasNode(CONFIG_NODENAME)) {
+        if (node.HasNode(CONFIG_NODENAME)) {
           //load
-          ConfigNode loadNode = node.getNode(CONFIG_NODENAME);
+          Debug.Log("StateFundingScenario loading from persistence");
+          ConfigNode loadNode = node.GetNode(CONFIG_NODENAME);
           ConfigNode.LoadObjectFromConfig(data, loadNode);
           isInit = true;
         }
         else {
+          Debug.Log("StateFundingScenario default init");
           //default init
-          //...
+          var NewView = new NewInstanceConfigView ();
+          NewView.OnCreate ((InstanceData Inst) => {
+            data = Inst;
+            ReviewMgr.CompleteReview ();
+          });
           isInit = true;
         }
+
+        for (int i = 0; i < StateFundingGlobal.fetch.Governments.ToArray ().Length; i++) {
+          Government Gov = StateFundingGlobal.fetch.Governments.ToArray () [i];
+          if (Gov.name == data.govName) {
+            data.Gov = Gov;
+          }
+        }
+
       }
       catch {
         
@@ -73,8 +92,9 @@ namespace StateFunding
       if (!isInit)
         return;
      
+      Debug.Log("StateFundingScenario saving to persistence");
       ConfigNode saveNode = ConfigNode.CreateConfigFromObject(data);
-      node.AddNode(saveNode, CONFIG_NODENAME);
+      node.SetNode(CONFIG_NODENAME, saveNode, true);
     }
     
     

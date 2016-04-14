@@ -18,10 +18,10 @@ namespace StateFunding {
     public int sc;
 
     [Persistent]
-    Review[] Reviews = new Review[0];
+    public Review[] Reviews;
 
 
-    public Instance () {
+    public InstanceData () {
       ActiveReview = new Review ();
     }
 

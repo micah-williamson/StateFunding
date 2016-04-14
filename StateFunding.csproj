@@ -9,7 +9,7 @@
     <AssemblyName>StateFunding</AssemblyName>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ReleaseVersion>0.4</ReleaseVersion>
+    <ReleaseVersion>0.4.0</ReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -39,6 +39,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <DebugSymbols>true</DebugSymbols>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -51,8 +52,6 @@
     <Compile Include="Government\Government.cs" />
     <Compile Include="Hooks\OnMainMenu.cs" />
     <Compile Include="Hooks\OnSpaceCentre.cs" />
-    <Compile Include="Instance\Instance.cs" />
-    <Compile Include="Instance\InstanceConfig.cs" />
     <Compile Include="View\View.cs" />
     <Compile Include="View\ViewManager.cs" />
     <Compile Include="ViewComponents\ViewComponent.cs" />
@@ -92,6 +91,8 @@
     <Compile Include="StateFunding\Views\StateFundingHubReviewsView.cs" />
     <Compile Include="StateFunding\Views\StateFundingHubCoverageView.cs" />
     <Compile Include="ViewComponents\ViewBox.cs" />
+    <Compile Include="Instance\InstanceData.cs" />
+    <Compile Include="Instance\StateFundingScenario.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
@@ -220,6 +221,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="data\modulealiases.settings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StateFunding.version">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

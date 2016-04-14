@@ -8,23 +8,26 @@ namespace StateFunding {
     public List<Government> Governments;
     public Government USK;
     public Government USSK;
-    public InstanceConfig InstanceConf;
     public ReviewManager ReviewMgr {
       get {
         if (StateFundingScenario.Instance != null)
-          return StateFundingScenario.Instance.ReviewMgr;        
+          return StateFundingScenario.Instance.ReviewMgr;
+        return null;
       }
     }
     public InstanceData GameInstance {
       get {
         if (StateFundingScenario.Instance != null)
-          return StateFundingScenario.Instance.data;
+          return StateFundingScenario.Instance.Data;
+        return null;
       }
     }
 
     private StateFundingApplicationLauncher AppLauncher;
 
+
     public StateFunding () {}
+
 
     private void InitGovernments () {
       Governments = new List<Government> ();
@@ -65,7 +68,7 @@ namespace StateFunding {
     public void unload() {
       ViewManager.removeAll ();
       AppLauncher.unload ();
-      GameInstance = null;
+      StateFundingGlobal.isLoaded = false;
     }
 
     public void load () {
@@ -73,15 +76,13 @@ namespace StateFunding {
       AppLauncher = new StateFundingApplicationLauncher ();
       InitGovernments ();
       InitEvents ();
-      InstanceConf = new InstanceConfig ();
-      ReviewMgr = new ReviewManager ();
       VesselHelper.LoadAliases ();
-      loadSave ();
+      StateFundingGlobal.isLoaded = true;
       Debug.Log ("StateFunding Mod Loaded");
     }
 
     public void LoadIfNeeded() {
-      if (GameInstance == null) {
+      if (!StateFundingGlobal.isLoaded) {
         load ();
       }
     }

@@ -5,9 +5,16 @@ using System.Collections.Generic;
 
 namespace StateFunding {
   public static class StateFundingHubReviewsView {
+
+    private static View curView;
+    private static ViewWindow curWindow;
+
     public static void draw (View Vw, ViewWindow Window) {
       Window.title = "Past Reviews";
-      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      InstanceData GameInstance = StateFundingGlobal.fetch.GameInstance;
+
+      curView = Vw;
+      curWindow = Window;
 
       int buttonWidth = 180;
       int buttonHeight = 30;
@@ -25,7 +32,7 @@ namespace StateFunding {
       Vw.addComponent (PastReviewsScroll);
 
       for (int i = GameInstance.getReviews ().Length - 1; i >= 0; i--) {
-        Review Rev = GameInstance.getReviews () [i];
+        Review Rev = GameInstance.Reviews[i];
 
         ViewReviewButton Btn = new ViewReviewButton (Rev, OnReviewClick);
         Btn.setRelativeTo (PastReviewsScroll);
@@ -44,6 +51,7 @@ namespace StateFunding {
         PastReviewsScroll.Components.Add (Btn);
       }
     }
+      
 
     public static void OnReviewClick(Review Rev) {
       StateFundingGlobal.fetch.ReviewMgr.OpenReview(Rev);
