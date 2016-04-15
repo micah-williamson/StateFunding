@@ -7,9 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>StateFunding</RootNamespace>
     <AssemblyName>StateFunding</AssemblyName>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ReleaseVersion>0.4.0</ReleaseVersion>
+    <ReleaseVersion>0.4.1</ReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -237,8 +235,7 @@
     </Content>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>cd $(OutDir)
-"c:\Program Files (x86)\Mono\bin\pdb2mdb" StateFunding.dll
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

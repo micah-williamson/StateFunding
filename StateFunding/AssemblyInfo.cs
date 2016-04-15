@@ -12,8 +12,8 @@ using System.Runtime.CompilerServices;
 
 
 
-[assembly: AssemblyVersion("0.4.0.0")]
-[assembly: AssemblyFileVersion("0.4.0.0")]
+[assembly: AssemblyVersion("0.4.1.0")]
+[assembly: AssemblyFileVersion("0.4.1.0")]
 
 [assembly: KSPAssembly("StateFunding", 0, 4)]
 //[assembly: KSPAssemblyDependency("Toolbar", 1, 0)]
