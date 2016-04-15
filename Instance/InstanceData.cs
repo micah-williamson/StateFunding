@@ -18,7 +18,7 @@ namespace StateFunding {
     public int sc;
 
     [Persistent]
-    public Review[] Reviews;
+    public Review[] Reviews = new Review[0];
 
 
     public InstanceData () {

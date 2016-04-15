@@ -1,5 +1,5 @@
-﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+﻿<Properties StartupItem="StateFunding.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug-Unity-Live" PreferredExecutionTarget="Unity.AttachToProcess" />
   <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

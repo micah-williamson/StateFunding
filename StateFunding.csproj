@@ -52,6 +52,15 @@
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Unity-Live|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\GameData\StateFunding</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Government\Government.cs" />
@@ -103,18 +112,23 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="KSPUtil">
       <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\KSPUtil.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -187,23 +201,8 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Government\" />
-    <Folder Include="Hooks\" />
-    <Folder Include="Instance\" />
-    <Folder Include="View\" />
-    <Folder Include="ViewComponents\" />
-    <Folder Include="assets\" />
-    <Folder Include="Review\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Review\Views\" />
-    <Folder Include="Instance\Views\" />
-    <Folder Include="StateFunding\" />
-    <Folder Include="StateFunding\Views\" />
-    <Folder Include="data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
     <None Include="assets\kerbalgovernment.pxm" />
     <None Include="pack_for_deploy.cmd" />
   </ItemGroup>
