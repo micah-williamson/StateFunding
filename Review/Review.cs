@@ -381,7 +381,7 @@ namespace StateFunding {
                           "Stranded Kerbals: " + strandedKerbals + "\n" +
                           "Vessels Destroyed: " + vesselsDestroyed;
 
-      if (SpaceStations.Length > 0) {
+      if ((SpaceStations != null) && (SpaceStations.Length > 0)) {
         returnText += "\n\n== Space Stations ==\n\n";
         for (int i = 0; i < SpaceStations.Length; i++) {
           SpaceStationReport StationReport = SpaceStations [i];
@@ -400,7 +400,7 @@ namespace StateFunding {
         }
       }
 
-      if (Bases.Length > 0) {
+      if ((Bases != null) && (Bases.Length > 0)) {
         returnText += "\n\n== Bases ==\n\n";
         for (int i = 0; i < Bases.Length; i++) {
           BaseReport Base = Bases [i];

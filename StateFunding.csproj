@@ -236,4 +236,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>cd $(OutDir)
+"c:\Program Files (x86)\Mono\bin\pdb2mdb" StateFunding.dll
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
