@@ -7,7 +7,7 @@ namespace StateFunding {
   public static class StateFundingHubMiningView {
     public static void draw (View Vw, ViewWindow Window) {
       Window.title = "Mining Rigs";
-      Instance GameInstance = StateFundingGlobal.fetch.GameInstance;
+      InstanceData GameInstance = StateFundingGlobal.fetch.GameInstance;
       Review Rev = GameInstance.ActiveReview;
       Rev.touch ();
 

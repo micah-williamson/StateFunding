@@ -20,28 +20,28 @@ namespace StateFunding {
     [Persistent]
     public int crew = 0;
 
-    [Persistent]
+      [Persistent]
     public int crewCapacity = 0;
 
-    [Persistent]
+      [Persistent]
     public int dockedVessels = 0;
 
-    [Persistent]
+      [Persistent]
     public int dockingPorts = 0;
 
-    [Persistent]
+      [Persistent]
     public bool drill = false;
 
-    [Persistent]
+      [Persistent]
     public bool scienceLab = false;
 
-    [Persistent]
+      [Persistent]
     public bool onAstroid = false;
 
-    [Persistent]
+      [Persistent]
     public int po = 0;
 
-    [Persistent]
+      [Persistent]
     public int sc = 0;
   }
 }

@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>StateFunding</RootNamespace>
     <AssemblyName>StateFunding</AssemblyName>
+    <ReleaseVersion>0.4.1</ReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -19,9 +20,9 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -29,13 +30,40 @@
     <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <DebugSymbols>true</DebugSymbols>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="pack_for_deploy.cmd" workingdir="${ProjectDir}" externalConsole="True" pauseExternalConsole="True" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Unity-Live|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\GameData\StateFunding</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Government\Government.cs" />
     <Compile Include="Hooks\OnMainMenu.cs" />
     <Compile Include="Hooks\OnSpaceCentre.cs" />
-    <Compile Include="Instance\Instance.cs" />
-    <Compile Include="Instance\InstanceConfig.cs" />
     <Compile Include="View\View.cs" />
     <Compile Include="View\ViewManager.cs" />
     <Compile Include="ViewComponents\ViewComponent.cs" />
@@ -75,18 +103,29 @@
     <Compile Include="StateFunding\Views\StateFundingHubReviewsView.cs" />
     <Compile Include="StateFunding\Views\StateFundingHubCoverageView.cs" />
     <Compile Include="ViewComponents\ViewBox.cs" />
+    <Compile Include="Instance\InstanceData.cs" />
+    <Compile Include="Instance\StateFundingScenario.cs" />
+    <Compile Include="StateFunding\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\packages\KSP_Libs.1.0.4\lib\net35\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\packages\KSP_Libs.1.0.4\lib\net35\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\packages\KSP_Libs.1.0.4\lib\net35\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="KSPUtil">
+      <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\KSPUtil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\Games\Steam\steamapps\common\Kerbal Space Program\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -160,24 +199,10 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Government\" />
-    <Folder Include="Hooks\" />
-    <Folder Include="Instance\" />
-    <Folder Include="View\" />
-    <Folder Include="ViewComponents\" />
-    <Folder Include="assets\" />
-    <Folder Include="Review\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Review\Views\" />
-    <Folder Include="Instance\Views\" />
-    <Folder Include="StateFunding\" />
-    <Folder Include="StateFunding\Views\" />
-    <Folder Include="data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
     <None Include="assets\kerbalgovernment.pxm" />
+    <None Include="pack_for_deploy.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\kerbalgovernment.jpg">
@@ -202,5 +227,15 @@
     <Content Include="data\modulealiases.settings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StateFunding.version">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

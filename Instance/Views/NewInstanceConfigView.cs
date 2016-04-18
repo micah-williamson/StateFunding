@@ -11,7 +11,7 @@ namespace StateFunding {
     private ViewLabel GovernmentDescription;
     private ViewLabel GovernmentGameplayDescription;
     private Government SelectedGovernment;
-    private Action <Instance> OnCreateCallback;
+    private Action <InstanceData> OnCreateCallback;
 
     public NewInstanceConfigView () {
       ViewManager.addView (this);
@@ -98,7 +98,7 @@ namespace StateFunding {
     }
 
     private void OnConfirm () {
-      Instance Inst = new Instance ();
+      InstanceData Inst = new InstanceData ();
       Inst.Gov = SelectedGovernment;
       Inst.govName = SelectedGovernment.name;
       Inst.po = (int)SelectedGovernment.startingPO;
@@ -107,7 +107,7 @@ namespace StateFunding {
       OnCreateCallback (Inst);
     }
 
-    public void OnCreate(Action <Instance>Callback) {
+    public void OnCreate(Action <InstanceData>Callback) {
       OnCreateCallback = Callback;
     }
   }
